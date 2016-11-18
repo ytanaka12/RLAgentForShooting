@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RLAgentForShooting.CSharp.Plugins", "RLAgentForShooting.CSharp.Plugins.csproj", "{5673ED49-F4A7-BBBB-04F0-1B489542E29C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RLAgentForShooting.CSharp", "RLAgentForShooting.CSharp.csproj", "{3AFBE796-80DA-08F2-4541-8246BBA8B1D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RLAgentForShooting.CSharp.Editor", "RLAgentForShooting.CSharp.Editor.csproj", "{1E351798-DAF6-E735-3C7B-2A214E53982E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5673ED49-F4A7-BBBB-04F0-1B489542E29C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5673ED49-F4A7-BBBB-04F0-1B489542E29C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5673ED49-F4A7-BBBB-04F0-1B489542E29C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5673ED49-F4A7-BBBB-04F0-1B489542E29C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AFBE796-80DA-08F2-4541-8246BBA8B1D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AFBE796-80DA-08F2-4541-8246BBA8B1D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AFBE796-80DA-08F2-4541-8246BBA8B1D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AFBE796-80DA-08F2-4541-8246BBA8B1D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E351798-DAF6-E735-3C7B-2A214E53982E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E351798-DAF6-E735-3C7B-2A214E53982E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E351798-DAF6-E735-3C7B-2A214E53982E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E351798-DAF6-E735-3C7B-2A214E53982E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
