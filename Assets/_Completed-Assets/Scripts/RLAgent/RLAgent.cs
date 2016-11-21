@@ -48,7 +48,9 @@ namespace RLProcess
 
 		private PolicyGradient PGLearn = new PolicyGradient();
 
-		// Use this for initialization
+		/*-----------------------------*/
+		/* Use this for initialization */
+		/*-----------------------------*/
 		void Start()
 		{
 			m_GameManager = m_GameManagerObj.GetComponent<Complete.GameManager>();
@@ -57,16 +59,16 @@ namespace RLProcess
 			}
 		}
 
-		// Update is called once per frame
-		void Update()
-		{
-
-		}
-
+		/*---------*/
+		/* ClickOn */
+		/*---------*/
 		public void ClickOnRecStart() {
 			m_IsRecording = true;
 		}
 
+		/*---------*/
+		/* ClickOn */
+		/*---------*/
 		public void ClickOnRecStop()
 		{
 			m_IsRecording = false;
@@ -78,12 +80,18 @@ namespace RLProcess
 			PGLearn.CalcTrajectory();
 		}
 
+		/*---------*/
+		/* ClickOn */
+		/*---------*/
 		public void ClickOnPlayBack() {
 			m_IsPlayBack = true;
 		}
 
-		float a = 5.0f;
-		void SetTestAction() {
+		/* ----------------- */
+		/* Set random action */
+		/* ----------------- */
+		void SetRandomAction() {
+			float a = 5.0f;
 			m_GameManager.m_Tanks[1].m_Movement.m_MovementInputValue = UnityEngine.Random.Range(-1.0f, 1.0f) * Time.deltaTime * a;
 			m_GameManager.m_Tanks[1].m_Movement.m_TurnInputValue = UnityEngine.Random.Range(-1.0f, 1.0f) * Time.deltaTime * a;
 			float bufRandom = UnityEngine.Random.Range(0.0f, 1.0f);
@@ -96,6 +104,9 @@ namespace RLProcess
 			}
 		}
 
+		/*------------*/
+		/* Set Action */
+		/*------------*/
 		void SetAction(float movement, float turn, bool fired) {
 			m_GameManager.m_Tanks[1].m_Movement.m_MovementInputValue = movement;
 			m_GameManager.m_Tanks[1].m_Movement.m_TurnInputValue = turn;
@@ -132,12 +143,15 @@ namespace RLProcess
 		}
 
 		private int iFrame = 0;
+		/*-------------*/
+		/* Switch Mode */
+		/*-------------*/
 		void SwitchMode() {
 			//input Action
 			//default mode
 			if (m_IsRecording == true || m_IsPlayBack == false || m_LogAITank.Count < 1)
 			{
-				SetTestAction();
+				SetRandomAction();
 				iFrame = 0;
 			}
 			//play back mode
@@ -156,6 +170,9 @@ namespace RLProcess
 			}
 		}
 
+		/*----------------------------*/
+		/* Main Loop for Control Tank */
+		/*----------------------------*/
 		void FixedUpdate()
 		{
 			SwitchMode();

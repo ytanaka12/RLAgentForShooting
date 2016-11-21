@@ -20,14 +20,18 @@ namespace RLProcess
 		//public GaussianPolicyModel m_GaussianPolicyModel
 		//	= new GaussianPolicyModel(m_NumKernel, m_StateDim);
 
+		/*--------------------*/
 		/* set log of AI Tank */
+		/*--------------------*/
 		public void SetLogAITank(List<TankInfo> log_ai_tank) {
 			for (int i = 0; i < log_ai_tank.Count; i++) {
 				m_LogAITank.Add((TankInfo)log_ai_tank[i].Clone());
 			}
 		}
 
+		/*-----------------------*/
 		/* set log of Human Tank */
+		/*-----------------------*/
 		public void SetLogHuTank(List<TankInfo> log_hu_tank)
 		{
 			for (int i = 0; i < log_hu_tank.Count; i++)
@@ -36,34 +40,9 @@ namespace RLProcess
 			}
 		}
 
-		void WriteTrajectory(List<TankInfo> trajectory)
-		{
-			StreamWriter writer = null;
-			writer = new StreamWriter(@"Assets/LogFiles/trajectory.csv", false, System.Text.Encoding.Default);
-
-			for (int i = 0; i < trajectory.Count; i++)
-			{
-				TankStateStruct bufState = trajectory[i].m_State;
-				TankActionStruct bufAction = trajectory[i].m_Action;
-				float reward = trajectory[i].m_Reward;
-				writer.Write(i);
-				writer.Write("," + bufState.m_Position.x);
-				writer.Write("," + bufState.m_Position.y);
-				writer.Write("," + bufState.m_Position.z);
-				writer.Write("," + bufState.m_Euler.x);
-				writer.Write("," + bufState.m_Euler.y);
-				writer.Write("," + bufState.m_Euler.z);
-				writer.Write("," + bufAction.m_MovementInput);
-				writer.Write("," + bufAction.m_TurnInput);
-				writer.Write("," + bufAction.m_Fired);
-				writer.Write("," + reward);
-				writer.Write("\n");
-			}
-			writer.Flush();
-			writer.Close();
-		}
-
+		/*------------------------------------------*/
 		/* calculate trajectory for policy gradient */
+		/*------------------------------------------*/
 		public bool CalcTrajectory() {
 			if (m_LogAITank.Count < 1 || m_LogHuTank.Count < 1 || m_LogAITank.Count != m_LogHuTank.Count) {
 				return false;
@@ -92,6 +71,35 @@ namespace RLProcess
 			return true;
 		}
 
-		
+		/*----------------*/
+		/* write log file */
+		/*----------------*/
+		void WriteTrajectory(List<TankInfo> trajectory)
+		{
+			StreamWriter writer = null;
+			writer = new StreamWriter(@"Assets/LogFiles/trajectory.csv", false, System.Text.Encoding.Default);
+
+			for (int i = 0; i < trajectory.Count; i++)
+			{
+				TankStateStruct bufState = trajectory[i].m_State;
+				TankActionStruct bufAction = trajectory[i].m_Action;
+				float reward = trajectory[i].m_Reward;
+				writer.Write(i);
+				writer.Write("," + bufState.m_Position.x);
+				writer.Write("," + bufState.m_Position.y);
+				writer.Write("," + bufState.m_Position.z);
+				writer.Write("," + bufState.m_Euler.x);
+				writer.Write("," + bufState.m_Euler.y);
+				writer.Write("," + bufState.m_Euler.z);
+				writer.Write("," + bufAction.m_MovementInput);
+				writer.Write("," + bufAction.m_TurnInput);
+				writer.Write("," + bufAction.m_Fired);
+				writer.Write("," + reward);
+				writer.Write("\n");
+			}
+			writer.Flush();
+			writer.Close();
+		}
+
 	}
 }

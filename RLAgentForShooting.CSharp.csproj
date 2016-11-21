@@ -84,6 +84,9 @@
     <Compile Include="Assets\_Completed-Assets\Scripts\Camera\CameraControl.cs" />
     <Compile Include="Assets\_Completed-Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\_Completed-Assets\Scripts\Managers\TankManager.cs" />
+    <Compile Include="Assets\_Completed-Assets\Scripts\RLAgent\GaussianKernel.cs" />
+    <Compile Include="Assets\_Completed-Assets\Scripts\RLAgent\GaussianPolicyModel.cs" />
+    <Compile Include="Assets\_Completed-Assets\Scripts\RLAgent\PolicyGradient.cs" />
     <Compile Include="Assets\_Completed-Assets\Scripts\RLAgent\RLAgent.cs" />
     <Compile Include="Assets\_Completed-Assets\Scripts\Shell\ShellExplosion.cs" />
     <Compile Include="Assets\_Completed-Assets\Scripts\Tank\TankHealth.cs" />
@@ -91,10 +94,13 @@
     <Compile Include="Assets\_Completed-Assets\Scripts\Tank\TankShooting.cs" />
     <Compile Include="Assets\_Completed-Assets\Scripts\Tank\Tank_MTorAT.cs" />
     <Compile Include="Assets\_Completed-Assets\Scripts\UI\UIDirectionControl.cs" />
+    <Compile Include="Assets\_Completed-Assets\Scripts\XmlUtil\XmlUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\Bowlby_One\OFL.txt" />
+    <None Include="Assets\GPMData.xml" />
     <None Include="Assets\LogFiles\log.txt" />
+    <None Include="Assets\SerializeData.xml" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
     <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlur.shader" />
