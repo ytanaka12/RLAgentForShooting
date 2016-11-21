@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<GaussianPolicyModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <m_Mean>
+    <float>3</float>
+    <float>5</float>
+    <float>7</float>
+  </m_Mean>
+  
+  <m_StandDev>9</m_StandDev>
+  
+  <m_GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>0</float>
+        <float>0</float>
+        <float>0</float>
+      </m_KernelCenter>
+      <m_Sigma>0</m_Sigma>
+    </GaussianKernel>
+    
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>12</float>
+        <float>21</float>
+        <float>31</float>
+      </m_KernelCenter>
+      <m_Sigma>4</m_Sigma>
+    </GaussianKernel>
+    
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>0</float>
+        <float>0</float>
+        <float>0</float>
+      </m_KernelCenter>
+      <m_Sigma>0</m_Sigma>
+    </GaussianKernel>
+  </m_GaussianKernel>
+</GaussianPolicyModel>

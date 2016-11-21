@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<TestData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <playerName>Player1</playerName>
+  <playerPos>
+    <x>0.9662993</x>
+    <y>0.101996914</y>
+    <z>0.523165762</z>
+  </playerPos>
+  <shotPos>
+    <Vector3>
+      <x>0.306191</x>
+      <y>0.183743253</y>
+      <z>0.559227765</z>
+    </Vector3>
+    <Vector3>
+      <x>0.7367727</x>
+      <y>0.839166641</y>
+      <z>0.878097653</z>
+    </Vector3>
+    <Vector3>
+      <x>0.177661434</x>
+      <y>0.174691334</y>
+      <z>0.3193461</z>
+    </Vector3>
+  </shotPos>
+  <enemyPos>
+    <Vector3>
+      <x>0.221253067</x>
+      <y>0.4996156</y>
+      <z>0.492637336</z>
+    </Vector3>
+    <Vector3>
+      <x>0.124501124</x>
+      <y>0.657029331</y>
+      <z>0.7767525</z>
+    </Vector3>
+  </enemyPos>
+</TestData>

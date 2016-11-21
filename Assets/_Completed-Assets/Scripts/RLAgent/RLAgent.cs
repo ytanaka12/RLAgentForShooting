@@ -46,12 +46,14 @@ namespace RLProcess
 		private bool m_IsPlayBack = false;
 		private List<TankInfo> m_Trajectory = new List<TankInfo>();
 
+		private PolicyGradient PGLearn = new PolicyGradient();
+
 		// Use this for initialization
 		void Start()
 		{
 			m_GameManager = m_GameManagerObj.GetComponent<Complete.GameManager>();
 			if (m_GameManager == null) {
-				Debug.LogFormat("akan");
+				//Debug.LogFormat("akan");
 			}
 		}
 
@@ -69,6 +71,11 @@ namespace RLProcess
 		{
 			m_IsRecording = false;
 			WriteLogFile();
+
+			//
+			PGLearn.SetLogAITank(m_LogAITank);
+			PGLearn.SetLogHuTank(m_LogHuTank);
+			PGLearn.CalcTrajectory();
 		}
 
 		public void ClickOnPlayBack() {
@@ -94,31 +101,6 @@ namespace RLProcess
 			m_GameManager.m_Tanks[1].m_Movement.m_TurnInputValue = turn;
 			m_GameManager.m_Tanks[1].m_Shooting.m_FireForAI = fired;
         }
-
-		void WriteLogFile() {
-			StreamWriter writer = null;
-			writer = new StreamWriter(@"Assets/LogFiles/log.csv", false, System.Text.Encoding.Default);
-
-			for (int i = 0; i < m_Trajectory.Count; i++) {
-				TankStateStruct bufState = m_Trajectory[i].m_State;
-				TankActionStruct bufAction = m_Trajectory[i].m_Action;
-				float reward = m_Trajectory[i].m_Reward;
-				writer.Write(i);
-				writer.Write("," + bufState.m_Position.x);
-				writer.Write("," + bufState.m_Position.y);
-				writer.Write("," + bufState.m_Position.z);
-				writer.Write("," + bufState.m_Euler.x);
-				writer.Write("," + bufState.m_Euler.y);
-				writer.Write("," + bufState.m_Euler.z);
-				writer.Write("," + bufAction.m_MovementInput);
-				writer.Write("," + bufAction.m_TurnInput);
-				writer.Write("," + bufAction.m_Fired);
-				writer.Write("," + reward);
-				writer.Write("\n");
-			}
-			writer.Flush();
-			writer.Close();
-		}
 
 		/*----------*/
 		/*----------*/
@@ -150,20 +132,24 @@ namespace RLProcess
 		}
 
 		private int iFrame = 0;
-		void ActionSetting() {
+		void SwitchMode() {
 			//input Action
-			if (m_IsRecording == true || m_IsPlayBack == false || m_Trajectory.Count < 1)
+			//default mode
+			if (m_IsRecording == true || m_IsPlayBack == false || m_LogAITank.Count < 1)
 			{
 				SetTestAction();
 				iFrame = 0;
 			}
-			else if (m_IsPlayBack == true && iFrame < m_Trajectory.Count)
+			//play back mode
+			else if (m_IsPlayBack == true && iFrame < m_LogAITank.Count)
 			{
-				TankActionStruct buf = m_Trajectory[iFrame].m_Action;
+				TankActionStruct buf = m_LogAITank[iFrame].m_Action;
+				//TankActionStruct buf = m_LogHuTank[iFrame].m_Action;
 				SetAction(buf.m_MovementInput, buf.m_TurnInput, buf.m_Fired);
 				iFrame++;
 			}
-			else if (m_IsPlayBack == true && m_Trajectory.Count <= iFrame)
+			//play back mode to default mode
+			else if (m_IsPlayBack == true && m_LogAITank.Count <= iFrame)
 			{
 				m_IsPlayBack = false;
 				iFrame = 0;
@@ -172,8 +158,7 @@ namespace RLProcess
 
 		void FixedUpdate()
 		{
-
-			ActionSetting();
+			SwitchMode();
 
 			//set states
 			SetAITankInfo();
@@ -181,9 +166,40 @@ namespace RLProcess
 
 			if (m_IsRecording == true)
 			{
+				//get information for logging
 				m_LogAITank.Add((TankInfo)m_AITankInfo.Clone());
 				m_LogHuTank.Add((TankInfo)m_HuTankInfo.Clone());
 			}
+		}
+
+		/*-------------------------*/
+		/* write log file function */
+		/*-------------------------*/
+		void WriteLogFile()
+		{
+			StreamWriter writer = null;
+			writer = new StreamWriter(@"Assets/LogFiles/log.csv", false, System.Text.Encoding.Default);
+
+			for (int i = 0; i < m_Trajectory.Count; i++)
+			{
+				TankStateStruct bufState = m_Trajectory[i].m_State;
+				TankActionStruct bufAction = m_Trajectory[i].m_Action;
+				float reward = m_Trajectory[i].m_Reward;
+				writer.Write(i);
+				writer.Write("," + bufState.m_Position.x);
+				writer.Write("," + bufState.m_Position.y);
+				writer.Write("," + bufState.m_Position.z);
+				writer.Write("," + bufState.m_Euler.x);
+				writer.Write("," + bufState.m_Euler.y);
+				writer.Write("," + bufState.m_Euler.z);
+				writer.Write("," + bufAction.m_MovementInput);
+				writer.Write("," + bufAction.m_TurnInput);
+				writer.Write("," + bufAction.m_Fired);
+				writer.Write("," + reward);
+				writer.Write("\n");
+			}
+			writer.Flush();
+			writer.Close();
 		}
 	}
 }
