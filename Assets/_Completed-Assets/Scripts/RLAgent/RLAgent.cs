@@ -46,7 +46,7 @@ namespace RLProcess
 		private bool m_IsPlayBack = false;
 		private List<TankInfo> m_Trajectory = new List<TankInfo>();
 
-		private PolicyGradient PGLearn = new PolicyGradient();
+		private REINFORCE PGLearn = new REINFORCE();
 
 		/*-----------------------------*/
 		/* Use this for initialization */

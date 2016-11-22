@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace RLProcess
 {
-	public class PolicyGradient : MonoBehaviour
+	public class REINFORCE : MonoBehaviour
 	{
 		private List<TankInfo> m_LogAITank = new List<TankInfo>();
 		private List<TankInfo> m_LogHuTank = new List<TankInfo>();
@@ -69,6 +69,21 @@ namespace RLProcess
 			//m_GaussianPolicyModel.OutputParamtersToXML();
 
 			return true;
+		}
+
+		/*---------------------------------*/
+		/* Optimization by Gradient Ascent */
+		/*---------------------------------*/
+		public void GradientAscent() {
+			//set state
+
+			//set action
+
+			//calculate Gradient
+
+			//Ascent
+
+			//terminate judge
 		}
 
 		/*----------------*/

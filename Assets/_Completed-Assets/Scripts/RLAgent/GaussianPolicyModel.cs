@@ -14,17 +14,22 @@ namespace RLProcess
 		public float m_StandDev;
 		public GaussianKernel[] m_GaussianKernel;
 
+		private float[] m_State;
+		private float m_Action;
+
 		private string serializeDataPath;
 
 		public GaussianPolicyModel()
 		{
 		}
-
+	
+		/*  */
 		public GaussianPolicyModel(int num_of_kernel, int state_dimension)
 		{
 			//initialize Policy Model
 			m_Mean = new float[num_of_kernel];
 			m_StandDev = 1.0f;
+			m_State = new float[state_dimension];
 
 			//initialize Gaussian Kernel
 			m_GaussianKernel = new GaussianKernel[num_of_kernel];
@@ -32,6 +37,75 @@ namespace RLProcess
 			{
 				m_GaussianKernel[i] = new GaussianKernel(state_dimension);
 			}
+		}
+
+		/*-----------*/
+		/* Set State */
+		/*-----------*/
+		public void SetState(float[] state) {
+			m_State = (float[])state.Clone();
+		}
+
+		/*------------*/
+		/* Set Action */
+		/*------------*/
+		public void SetAction(float action) {
+			m_Action = action;
+		}
+
+		/*------------------------------------*/
+		/* Calculate Gradient respect to Mean */
+		/*------------------------------------*/
+		float[] CalcGradientMean() {
+			float[] basis_func_val = new float[m_Mean.Length];
+
+			//calc basis function values
+			for (int i = 0; i < basis_func_val.Length; i++) {
+				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
+			}
+
+			//calc... meanT basis_func
+			float mb = 0.0f;
+			for (int i = 0; i < m_Mean.Length; i++) {
+				mb += m_Mean[i] * basis_func_val[i];
+			}
+
+			//calc... ( a - mb ) / sigma^2
+			float a_mb__sig = ( m_Action - mb ) / Mathf.Pow( m_StandDev, 2.0f);
+
+			//calc Answer
+			float[] ans = new float[m_Mean.Length];
+			for (int i = 0; i < ans.Length; i++) {
+				ans[i] = a_mb__sig * basis_func_val[i];
+			}
+
+			return (float[])ans.Clone();
+		}
+
+		/* Calculate Gradient respect to Standard Deviation */
+		float CalcgradientStandDev() {
+			float[] basis_func_val = new float[m_Mean.Length];
+
+			//calc basis function values
+			for (int i = 0; i < basis_func_val.Length; i++)
+			{
+				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
+			}
+
+			//calc... meanT basis_func
+			float mb = 0.0f;
+			for (int i = 0; i < m_Mean.Length; i++)
+			{
+				mb += m_Mean[i] * basis_func_val[i];
+			}
+
+			//calc... ( a - mb )^2
+			float a_mb2 = Mathf.Pow( m_Action - mb, 2.0f);
+
+			//calc Answer
+			float ans = (a_mb2 - Mathf.Pow(m_StandDev, 2.0f)) / Mathf.Pow(m_StandDev, 3.0f);
+
+			return ans;
 		}
 
 		public void OutputParamtersToXML()
