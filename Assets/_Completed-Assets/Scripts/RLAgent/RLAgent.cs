@@ -87,6 +87,19 @@ namespace RLProcess
 			m_IsPlayBack = true;
 		}
 
+		public void ClickOnGPM_Load() {
+			PGLearn.m_GaussianPolicyModel.InputParametersFromXML("/GPMData.xml");
+		}
+
+		public void ClickOnGPM_Update() {
+			PGLearn.RunREINFORCE();
+		}
+
+		public void ClickOnMakeGaussianPolicyModelTemplate() {
+			GaussianPolicyModel GPM = new GaussianPolicyModel(3, 3);
+			GPM.OutputParamtersToXML("xmltemplate.xml");
+		}
+
 		/* ----------------- */
 		/* Set random action */
 		/* ----------------- */

@@ -65,25 +65,91 @@ namespace RLProcess
 			}
 			WriteTrajectory(m_Trajectory);
 
-			m_GaussianPolicyModel.InputParametersFromXML();
+			//GradientAscent();
+
+			//m_GaussianPolicyModel.InputParametersFromXML();
 			//m_GaussianPolicyModel.OutputParamtersToXML();
 
 			return true;
+		}
+
+		public void RunREINFORCE() {
+			//CalcTrajectory();
+			Debug.LogFormat("trajectory length: {0}", m_Trajectory.Count);
+			GradientAscent();
+			m_GaussianPolicyModel.OutputParamtersToXML("/GPMData.xml");
+		}
+
+		float[] PrepareStateVector(int n, int t) {
+			List<float> state = new List<float>();
+			state.Add(m_Trajectory[t].m_State.m_Position.x);
+			//state.Add(m_Trajectory[t].m_State.m_Position.y);
+			state.Add(m_Trajectory[t].m_State.m_Position.z);
+			//state.Add(m_Trajectory[t].m_State.m_Euler.x);
+			state.Add(m_Trajectory[t].m_State.m_Euler.y);
+			//state.Add(m_Trajectory[t].m_State.m_Euler.z);
+
+			float[] stateArray = state.ToArray();
+
+			return (float[])stateArray.Clone();
+		}
+
+		float[] AddVectorB2VectorA(ref float[] A, ref float[] B)
+		{
+			float[] ans = new float[A.Length];
+
+			//Debug.LogFormat("length: {0} / {1} / {2}", A.Length, B.Length, ans.Length);
+
+			for (int i = 0; i < A.Length; i++)
+			{
+				ans[i] = 0.0f;
+			}
+
+			for (int i = 0; i < A.Length; i++)
+			{
+				ans[i] = A[i] + B[i];
+			}
+			return (float[])ans.Clone();
 		}
 
 		/*---------------------------------*/
 		/* Optimization by Gradient Ascent */
 		/*---------------------------------*/
 		public void GradientAscent() {
-			//set state
+			float eps = 0.05f;
+			float[] gAscentMean = new float[3] { 0.0f, 0.0f, 0.0f};
+			float gAscentStandDev = 0.0f;
 
-			//set action
+			for (int n = 0; n < 1; n++) {
+				for (int t = 0; t < m_Trajectory.Count; t++) {
+					//set state
+					m_GaussianPolicyModel.SetState(PrepareStateVector(n, t));
 
-			//calculate Gradient
+					//set action
+					//m_GaussianPolicyModel.SetAction(m_Trajectory[t].m_Action.m_MovementInput);
+					m_GaussianPolicyModel.SetAction(1.5f);
+
+					//calculate Gradient
+					float[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
+                    gAscentMean = AddVectorB2VectorA( ref gAscentMean, ref bufMean );
+					gAscentStandDev += m_GaussianPolicyModel.CalcgradientStandDev();
+				}
+			}
 
 			//Ascent
+			for (int i = 0; i < gAscentMean.Length; i++)
+			{
+				m_GaussianPolicyModel.m_Mean[i] += eps * gAscentMean[i];
+			}
+			m_GaussianPolicyModel.m_StandDev += eps * gAscentStandDev;
+
+			Debug.LogFormat("ActionMean: {0}", m_GaussianPolicyModel.CalcActionMean());
 
 			//terminate judge
+			//if (gAscentMean[0] < 0.1f)
+			//{
+			//	return;
+			//}
 		}
 
 		/*----------------*/

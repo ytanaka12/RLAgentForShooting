@@ -53,16 +53,39 @@ namespace RLProcess
 			m_Action = action;
 		}
 
+		/* calculate Mean of Action */
+		public float CalcActionMean()
+		{
+			float[] basis_func_val = new float[m_Mean.Length];
+
+			//calc basis function values
+			for (int i = 0; i < basis_func_val.Length; i++)
+			{
+				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
+			}
+
+			//calc... meanT basis_func
+			float mb = 0.0f;
+			for (int i = 0; i < m_Mean.Length; i++)
+			{
+				mb += m_Mean[i] * basis_func_val[i];
+			}
+			Debug.LogFormat("mb: {0}", mb);
+			return mb;
+		}
+
 		/*------------------------------------*/
 		/* Calculate Gradient respect to Mean */
 		/*------------------------------------*/
-		float[] CalcGradientMean() {
+		public float[] CalcGradientMean() {
 			float[] basis_func_val = new float[m_Mean.Length];
+			//Debug.LogFormat("mean.length: {0}", m_Mean.Length);
 
 			//calc basis function values
 			for (int i = 0; i < basis_func_val.Length; i++) {
 				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
 			}
+			//Debug.LogFormat("bf value: {0}, {1}, {2}", basis_func_val[0], basis_func_val[1], basis_func_val[2]);
 
 			//calc... meanT basis_func
 			float mb = 0.0f;
@@ -82,8 +105,10 @@ namespace RLProcess
 			return (float[])ans.Clone();
 		}
 
+		/*--------------------------------------------------*/
 		/* Calculate Gradient respect to Standard Deviation */
-		float CalcgradientStandDev() {
+		/*--------------------------------------------------*/
+		public float CalcgradientStandDev() {
 			float[] basis_func_val = new float[m_Mean.Length];
 
 			//calc basis function values
@@ -108,20 +133,20 @@ namespace RLProcess
 			return ans;
 		}
 
-		public void OutputParamtersToXML()
+		public void OutputParamtersToXML(string file_path)
 		{
-			Debug.LogFormat("ok");
-			serializeDataPath = Application.dataPath + "/GPMData.xml";
+			Debug.LogFormat("output parameter to xml file");
+			serializeDataPath = Application.dataPath + file_path;
 			XmlUtil.Seialize<GaussianPolicyModel>(serializeDataPath, (GaussianPolicyModel)this.MemberwiseClone());
 		}
 
-		public void InputParametersFromXML()
+		public void InputParametersFromXML(string file_path)
 		{
-			serializeDataPath = Application.dataPath + "/GPMData.xml";
+			serializeDataPath = Application.dataPath + file_path;
 			GaussianPolicyModel buf = XmlUtil.Deserialize<GaussianPolicyModel>(serializeDataPath);
 			int num_of_kernel = buf.m_GaussianKernel.Length;
 			int state_dimension = buf.m_GaussianKernel[0].m_KernelCenter.Length;
-			Debug.LogFormat("num: {0} / dim: {1}", num_of_kernel, state_dimension);
+			Debug.LogFormat("loarding xml info... num: {0} / dim: {1}", num_of_kernel, state_dimension);
 			m_Mean = new float[num_of_kernel];
 			for (int i = 0; i < num_of_kernel; i++)
 			{
@@ -135,11 +160,11 @@ namespace RLProcess
 				m_GaussianKernel[i] = (GaussianKernel)buf.m_GaussianKernel[i];
 			}
 			//Debug.LogFormat("okok");
-			for (int i = 0; i < state_dimension; i++)
-			{
-				float kc = m_GaussianKernel[1].m_KernelCenter[i];
-				Debug.LogFormat("kc: {0}", kc);
-			}
+			//for (int i = 0; i < state_dimension; i++)
+			//{
+			//	float kc = m_GaussianKernel[1].m_KernelCenter[i];
+			//	//Debug.LogFormat("kc: {0}", kc);
+			//}
 		}
 	}
 }
