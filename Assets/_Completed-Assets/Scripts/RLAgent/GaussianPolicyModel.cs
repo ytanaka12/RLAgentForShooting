@@ -19,8 +19,7 @@ namespace RLProcess
 
 		private string serializeDataPath;
 
-		public GaussianPolicyModel()
-		{
+		public GaussianPolicyModel() {
 		}
 	
 		/*  */

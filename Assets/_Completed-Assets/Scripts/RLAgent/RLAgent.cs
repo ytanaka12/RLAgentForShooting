@@ -34,6 +34,17 @@ namespace RLProcess
 
 	public class RLAgent : MonoBehaviour
 	{
+		public class StateClass{
+			float[] State = new float[3];
+		}
+		public class OneFrameData {
+			StateClass States;
+			float Action;
+			float Reward;
+		}
+		List<OneFrameData> m_TrajectoryMovement = new List<OneFrameData>();
+		List<OneFrameData> m_TrajectoryTurn = new List<OneFrameData>();
+		List<OneFrameData> m_TrajectoryFired = new List<OneFrameData>();
 
 		public GameObject m_GameManagerObj;
 		private Complete.GameManager m_GameManager;
@@ -87,14 +98,26 @@ namespace RLProcess
 			m_IsPlayBack = true;
 		}
 
+		/*---------*/
+		/* ClickOn */
+		/*---------*/
 		public void ClickOnGPM_Load() {
 			PGLearn.m_GaussianPolicyModel.InputParametersFromXML("/GPMData.xml");
 		}
 
+		/*---------*/
+		/* ClickOn */
+		/*---------*/
 		public void ClickOnGPM_Update() {
-			PGLearn.RunREINFORCE();
+			for (int i = 0; i < 10; i++)
+			{
+				PGLearn.RunREINFORCE();
+			}
 		}
 
+		/*---------*/
+		/* ClickOn */
+		/*---------*/
 		public void ClickOnMakeGaussianPolicyModelTemplate() {
 			GaussianPolicyModel GPM = new GaussianPolicyModel(3, 3);
 			GPM.OutputParamtersToXML("xmltemplate.xml");
@@ -106,7 +129,7 @@ namespace RLProcess
 		void SetRandomAction() {
 			float a = 5.0f;
 			m_GameManager.m_Tanks[1].m_Movement.m_MovementInputValue = UnityEngine.Random.Range(-1.0f, 1.0f) * Time.deltaTime * a;
-			m_GameManager.m_Tanks[1].m_Movement.m_TurnInputValue = UnityEngine.Random.Range(-1.0f, 1.0f) * Time.deltaTime * a;
+			m_GameManager.m_Tanks[1].m_Movement.m_TurnInputValue = UnityEngine.Random.Range(-1.1f, 1.1f) * Time.deltaTime * a;
 			float bufRandom = UnityEngine.Random.Range(0.0f, 1.0f);
 			if (0.99f < bufRandom)
 			{
