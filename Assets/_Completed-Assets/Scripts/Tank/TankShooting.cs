@@ -17,7 +17,7 @@ namespace Complete
         public float m_MaxChargeTime = 0.75f;       // How long the shell can charge for before it is fired at max force.
 
 		public bool m_IsManual = true;
-		public bool m_FireForAI = true;
+		public bool m_FireForAI = false;
 
         private string m_FireButton;                // The input axis that is used for launching shells.
         private float m_CurrentLaunchForce;         // The force that will be given to the shell when the fire button is released.
@@ -40,6 +40,7 @@ namespace Complete
 
             // The rate that the launch force charges up is the range of possible forces by the max charge time.
             m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
+			m_FireForAI = false;
         }
 
 		//private void FixedUpdate()

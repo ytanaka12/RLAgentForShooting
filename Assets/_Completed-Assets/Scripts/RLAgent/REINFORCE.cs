@@ -4,44 +4,47 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
-
 namespace RLProcess
 {
+
 	public class REINFORCE : MonoBehaviour
 	{
-		public class StateClass
+		/* Must need to scecify these parameter */
+		private const int m_NumKernel = 3;
+		private const int m_StateDim = 3;
+
+		public class OneFrameData : ICloneable
 		{
-			float[] State = new float[3];
+			public float[] State = new float[m_StateDim];
+			public float Action;
+			public float Reward;
+			public object Clone()
+			{
+				return MemberwiseClone();
+			}
 		}
-		public class OneFrameData
-		{
-			StateClass States;
-			float Action;
-			float Reward;
-		}
-		private List<List<OneFrameData>> m_TrajectoryMovement = new List<List<OneFrameData>>();
-		private List<List<OneFrameData>> m_TrajectoryTurn = new List<List<OneFrameData>>();
-		private List<List<OneFrameData>> m_TrajectoryFired = new List<List<OneFrameData>>();
+
+		public List<List<OneFrameData>> m_Trajectories = new List<List<OneFrameData>>();
+		//private List<List<OneFrameData>> m_TrajectoryMovement = new List<List<OneFrameData>>();
+		//private List<List<OneFrameData>> m_TrajectoryTurn = new List<List<OneFrameData>>();
+		//private List<List<OneFrameData>> m_TrajectoryFired = new List<List<OneFrameData>>();
 
 		private List<TankInfo> m_LogAITank = new List<TankInfo>();
 		private List<TankInfo> m_LogHuTank = new List<TankInfo>();
-		private List<TankInfo> m_Trajectory = new List<TankInfo>();
+		//private List<TankInfo> m_Trajectory = new List<TankInfo>();
 
 		public GaussianPolicyModel m_GaussianPolicyModel = new GaussianPolicyModel();
 
-		public GaussianPolicyModel m_GPM_MovementInput = new GaussianPolicyModel();
-		public GaussianPolicyModel m_GPM_TurnInput = new GaussianPolicyModel();
-		public GaussianPolicyModel m_GPM_Fired = new GaussianPolicyModel();
-		//private const int m_NumKernel = 3;
-		//private const int m_StateDim = 3;
+		//public GaussianPolicyModel m_GPM_MovementInput = new GaussianPolicyModel();
+		//public GaussianPolicyModel m_GPM_TurnInput = new GaussianPolicyModel();
+		//public GaussianPolicyModel m_GPM_Fired = new GaussianPolicyModel();
 		//public GaussianPolicyModel m_GaussianPolicyModel
 		//	= new GaussianPolicyModel(m_NumKernel, m_StateDim);
 
+		public string fNameGPM_XML = "/GPMData.xml";
+
 		void Start() {
-			m_GPM_MovementInput.InputParametersFromXML("/GPMData.xml");
-			m_GPM_TurnInput.InputParametersFromXML("/GPMData.xml");
-			m_GPM_Fired.InputParametersFromXML("/GPMData.xml");
+			//m_GaussianPolicyModel.InputParametersFromXML(fNameGPM_XML);
 		}
 
 		/*--------------------*/
@@ -62,6 +65,11 @@ namespace RLProcess
 			{
 				m_LogHuTank.Add((TankInfo)log_hu_tank[i].Clone());
 			}
+		}
+
+		/* set trajectories */
+		public void SetTrajectories(List<List<OneFrameData>> trajectories) {
+			m_Trajectories = new List<List<OneFrameData>>(trajectories);
 		}
 
 		/*------------------------------------------*/
@@ -85,13 +93,9 @@ namespace RLProcess
 
 				bufTankInfo.m_State.m_Euler = m_LogHuTank[i].m_State.m_Euler - m_LogAITank[i].m_State.m_Euler;
 
-				m_Trajectory.Add((TankInfo)bufTankInfo.Clone());
+				//m_Trajectory.Add((TankInfo)bufTankInfo.Clone());
 			}
-			WriteTrajectory(m_Trajectory);
-
-			Debug.LogFormat("output trajectory to xml file");
-			string serializeDataPath = Application.dataPath + "/trajectory.xml";
-			XmlUtil.Seialize<List<TankInfo>>(serializeDataPath, (List<TankInfo>)m_Trajectory);
+			//WriteTrajectory(m_Trajectory);
 
 			return true;
 		}
@@ -100,26 +104,24 @@ namespace RLProcess
 		/* Run REINFORCE */
 		/*---------------*/
 		public void RunREINFORCE() {
-			GradientAscent(m_GaussianPolicyModel);
-			m_GaussianPolicyModel.OutputParamtersToXML("/GPMData.xml");
+			GradientAscent();
 		}
 
 		/*---------------------------------------*/
 		/* Prepare state vector, class to vector */
 		/*---------------------------------------*/
-		float[] PrepareStateVector(int n, int t) {
-			List<float> state = new List<float>();
-			state.Add(m_Trajectory[t].m_State.m_Position.x);
-			//state.Add(m_Trajectory[t].m_State.m_Position.y);
-			state.Add(m_Trajectory[t].m_State.m_Position.z);
-			//state.Add(m_Trajectory[t].m_State.m_Euler.x);
-			state.Add(m_Trajectory[t].m_State.m_Euler.y);
-			//state.Add(m_Trajectory[t].m_State.m_Euler.z);
+		//float[] PrepareStateVector(int n, int t) {
+		//	List<float> state = new List<float>();
+		//	List<OneFrameData> bufdata = m_Trajectory[0];
+		//	OneFrameData buf = bufdata[0];
+		//	state.Add(m_Trajectory[n][t].m_State.m_Position.x);
+		//	state.Add(m_Trajectory[t].m_State.m_Position.z);
+		//	state.Add(m_Trajectory[t].m_State.m_Euler.y);
 
-			float[] stateArray = state.ToArray();
+		//	float[] stateArray = state.ToArray();
 
-			return (float[])stateArray.Clone();
-		}
+		//	return (float[])stateArray.Clone();
+		//}
 
 		/*------------*/
 		/* add vector */
@@ -145,35 +147,39 @@ namespace RLProcess
 		/*---------------------------------*/
 		/* Optimization by Gradient Ascent */
 		/*---------------------------------*/
-		public void GradientAscent(GaussianPolicyModel gpm) {
+		public void GradientAscent() {
 			float eps = 0.05f;
 			float[] gAscentMean = new float[3] { 0.0f, 0.0f, 0.0f};
 			float gAscentStandDev = 0.0f;
 
-			for (int n = 0; n < 1; n++) {
-				for (int t = 0; t < m_Trajectory.Count; t++) {
+			for (int n = 0; m_Trajectories.Count < 1; n++) {
+				for (int t = 0; t < m_Trajectories[n].Count; t++) {
 					//set state
-					gpm.SetState(PrepareStateVector(n, t));
+					m_GaussianPolicyModel.SetState((float[])m_Trajectories[n][t].State.Clone());
+					//gpm.SetState(PrepareStateVector(n, t));
 
 					//set action
-					gpm.SetAction(m_Trajectory[t].m_Action.m_MovementInput);
+					//gpm.SetAction(m_Trajectory[t].m_Action.m_MovementInput);
+					m_GaussianPolicyModel.SetAction(m_Trajectories[n][t].Action);
 					//gpm.SetAction(5.6f);
 
 					//calculate Gradient
-					float[] bufMean = gpm.CalcGradientMean();
+					float[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
                     gAscentMean = AddVectorB2VectorA( ref gAscentMean, ref bufMean );
-					gAscentStandDev += gpm.CalcgradientStandDev();
+					gAscentStandDev += m_GaussianPolicyModel.CalcgradientStandDev();
 				}
 			}
 
 			//Ascent
 			for (int i = 0; i < gAscentMean.Length; i++)
 			{
-				gpm.m_Mean[i] += eps * gAscentMean[i];
+				m_GaussianPolicyModel.m_Mean[i] += eps * gAscentMean[i];
 			}
-			gpm.m_StandDev += eps * gAscentStandDev;
+			m_GaussianPolicyModel.m_StandDev += eps * gAscentStandDev;
 
-			Debug.LogFormat("ActionMean: {0}", gpm.CalcActionMean());
+			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][0].State.Clone());
+            float buf = m_GaussianPolicyModel.CalcActionMean();
+			Debug.LogFormat("ActionMean: {0}", buf);
 
 			//terminate judge
 			//if (gAscentMean[0] < 0.1f)

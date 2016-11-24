@@ -60,7 +60,7 @@ namespace RLProcess
 			//calc basis function values
 			for (int i = 0; i < basis_func_val.Length; i++)
 			{
-				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
+				basis_func_val[i] = m_GaussianKernel[i].Result(ref m_State);
 			}
 
 			//calc... meanT basis_func
@@ -82,7 +82,7 @@ namespace RLProcess
 
 			//calc basis function values
 			for (int i = 0; i < basis_func_val.Length; i++) {
-				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
+				basis_func_val[i] = m_GaussianKernel[i].Result(ref m_State);
 			}
 			//Debug.LogFormat("bf value: {0}, {1}, {2}", basis_func_val[0], basis_func_val[1], basis_func_val[2]);
 
@@ -113,7 +113,7 @@ namespace RLProcess
 			//calc basis function values
 			for (int i = 0; i < basis_func_val.Length; i++)
 			{
-				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
+				basis_func_val[i] = m_GaussianKernel[i].Result(ref m_State);
 			}
 
 			//calc... meanT basis_func
@@ -149,6 +149,7 @@ namespace RLProcess
 			m_Mean = new float[num_of_kernel];
 			for (int i = 0; i < num_of_kernel; i++)
 			{
+				Debug.LogFormat("i = [{0}]", i);
 				m_Mean[i] = buf.m_Mean[i];
 			}
 			m_StandDev = buf.m_StandDev;

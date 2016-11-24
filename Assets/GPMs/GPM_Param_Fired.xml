@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="shift_jis"?>
+<GaussianPolicyModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <m_Mean>
+    <float>6.112843</float>
+    <float>3.81800079</float>
+    <float>73.85467</float>
+  </m_Mean>
+  <m_StandDev>181.4497</m_StandDev>
+  <m_GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>-15</float>
+        <float>33</float>
+        <float>-176</float>
+      </m_KernelCenter>
+      <m_Sigma>100</m_Sigma>
+    </GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>-20</float>
+        <float>-40</float>
+        <float>-180</float>
+      </m_KernelCenter>
+      <m_Sigma>100</m_Sigma>
+    </GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>-10</float>
+        <float>30</float>
+        <float>-160</float>
+      </m_KernelCenter>
+      <m_Sigma>100</m_Sigma>
+    </GaussianKernel>
+  </m_GaussianKernel>
+</GaussianPolicyModel>

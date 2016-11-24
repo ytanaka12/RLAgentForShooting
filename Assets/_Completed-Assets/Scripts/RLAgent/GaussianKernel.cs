@@ -21,7 +21,7 @@ namespace RLProcess
 			this.m_KernelCenter = new float[state_dimension];
 		}
 
-		public float Result(float[] s)
+		public float Result(ref float[] s)
 		{
 			//error
 			if (s.Length != m_KernelCenter.Length)

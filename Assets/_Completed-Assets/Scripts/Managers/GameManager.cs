@@ -15,6 +15,7 @@ namespace Complete
         public GameObject m_TankPrefab;             // Reference to the prefab the players will control.
         public TankManager[] m_Tanks;               // A collection of managers for enabling and disabling different aspects of the tanks.
 
+		public bool m_Is1stPlayerAI = false;
 		public bool m_Is2ndPlayerAI = false;
 
 		private int m_RoundNumber;                  // Which round the game is currently on.
@@ -49,7 +50,12 @@ namespace Complete
                 m_Tanks[i].m_PlayerNumber = i + 1;
                 m_Tanks[i].Setup();
             }
-
+			//1st player become AI
+			if (m_Is1stPlayerAI == true)
+			{
+				m_Tanks[0].m_IsManual = false;
+				m_Tanks[0].Setup();
+			}
 			//2nd player become AI
 			if (m_Is2ndPlayerAI == true) {
 				m_Tanks[1].m_IsManual = false;
