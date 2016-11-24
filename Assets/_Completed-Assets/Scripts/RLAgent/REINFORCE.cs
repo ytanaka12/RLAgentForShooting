@@ -25,21 +25,11 @@ namespace RLProcess
 		}
 
 		public List<List<OneFrameData>> m_Trajectories = new List<List<OneFrameData>>();
-		//private List<List<OneFrameData>> m_TrajectoryMovement = new List<List<OneFrameData>>();
-		//private List<List<OneFrameData>> m_TrajectoryTurn = new List<List<OneFrameData>>();
-		//private List<List<OneFrameData>> m_TrajectoryFired = new List<List<OneFrameData>>();
 
 		private List<TankInfo> m_LogAITank = new List<TankInfo>();
 		private List<TankInfo> m_LogHuTank = new List<TankInfo>();
-		//private List<TankInfo> m_Trajectory = new List<TankInfo>();
 
 		public GaussianPolicyModel m_GaussianPolicyModel = new GaussianPolicyModel();
-
-		//public GaussianPolicyModel m_GPM_MovementInput = new GaussianPolicyModel();
-		//public GaussianPolicyModel m_GPM_TurnInput = new GaussianPolicyModel();
-		//public GaussianPolicyModel m_GPM_Fired = new GaussianPolicyModel();
-		//public GaussianPolicyModel m_GaussianPolicyModel
-		//	= new GaussianPolicyModel(m_NumKernel, m_StateDim);
 
 		public string fNameGPM_XML = "/GPMData.xml";
 
@@ -148,18 +138,16 @@ namespace RLProcess
 		/* Optimization by Gradient Ascent */
 		/*---------------------------------*/
 		public void GradientAscent() {
-			float eps = 0.05f;
+			float eps = 0.1f;
 			float[] gAscentMean = new float[3] { 0.0f, 0.0f, 0.0f};
 			float gAscentStandDev = 0.0f;
 
-			for (int n = 0; m_Trajectories.Count < 1; n++) {
+			for (int n = 0; n < m_Trajectories.Count ; n++) {
 				for (int t = 0; t < m_Trajectories[n].Count; t++) {
 					//set state
 					m_GaussianPolicyModel.SetState((float[])m_Trajectories[n][t].State.Clone());
-					//gpm.SetState(PrepareStateVector(n, t));
 
 					//set action
-					//gpm.SetAction(m_Trajectory[t].m_Action.m_MovementInput);
 					m_GaussianPolicyModel.SetAction(m_Trajectories[n][t].Action);
 					//gpm.SetAction(5.6f);
 
@@ -177,7 +165,7 @@ namespace RLProcess
 			}
 			m_GaussianPolicyModel.m_StandDev += eps * gAscentStandDev;
 
-			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][0].State.Clone());
+			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][50].State.Clone());
             float buf = m_GaussianPolicyModel.CalcActionMean();
 			Debug.LogFormat("ActionMean: {0}", buf);
 

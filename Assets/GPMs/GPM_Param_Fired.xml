@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <GaussianPolicyModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <m_Mean>
-    <float>6.112843</float>
+    <float>5.976622</float>
     <float>3.81800079</float>
-    <float>73.85467</float>
+    <float>73.05835</float>
   </m_Mean>
-  <m_StandDev>181.4497</m_StandDev>
+  <m_StandDev>530.0308</m_StandDev>
   <m_GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>

@@ -69,7 +69,7 @@ namespace RLProcess
 			{
 				mb += m_Mean[i] * basis_func_val[i];
 			}
-			Debug.LogFormat("mb: {0}", mb);
+			//Debug.LogFormat("mb: {0}", mb);
 			return mb;
 		}
 
@@ -149,7 +149,7 @@ namespace RLProcess
 			m_Mean = new float[num_of_kernel];
 			for (int i = 0; i < num_of_kernel; i++)
 			{
-				Debug.LogFormat("i = [{0}]", i);
+				//Debug.LogFormat("i = [{0}]", i);
 				m_Mean[i] = buf.m_Mean[i];
 			}
 			m_StandDev = buf.m_StandDev;

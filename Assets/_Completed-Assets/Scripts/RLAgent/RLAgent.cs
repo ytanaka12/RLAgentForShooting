@@ -53,9 +53,8 @@ namespace RLProcess
 
 		private bool m_IsRecording = false;
 		private bool m_IsPlayBack = false;
-		//private List<TankInfo> m_Trajectory = new List<TankInfo>();
 
-		//private REINFORCE PGLearn = new REINFORCE();
+
 		private REINFORCE m_REINFORCE_Move = new REINFORCE();
 		private REINFORCE m_REINFORCE_Turn = new REINFORCE();
 		private REINFORCE m_REINFORCE_Fired = new REINFORCE();
@@ -95,14 +94,6 @@ namespace RLProcess
 			m_IsRecording = false;
 			//write log file
 			SaveEpisode(fNameSaveEpisode);
-			//clear log data
-			//m_TanksLog.m_LogAITank.Clear();
-			//m_TanksLog.m_LogHuTank.Clear();
-
-			//Reinforce test
-			//PGLearn.SetLogAITank(m_Episode.m_LogAITank);
-			//PGLearn.SetLogHuTank(m_Episode.m_LogHuTank);
-			//PGLearn.CalcTrajectory();
 		}
 
 		/*--------------------*/
@@ -123,7 +114,7 @@ namespace RLProcess
 			Debug.LogFormat("{0} Episodes were Loaded.", fNamesOfLoadEpisodes.Length);
 			//Generate Trajectories
 			GenerateTrajectoriesForREINFORCE_ForExploration();
-		}
+        }
 
 		public void ClickOnAdd2Episodes() {
 			m_Episodes.Add((Episode)m_Episode.Clone());
@@ -162,8 +153,8 @@ namespace RLProcess
 		public void ClickOnGPM_Load() {
 			//PGLearn.m_GaussianPolicyModel.InputParametersFromXML("/GPMData.xml");
 			m_REINFORCE_Move.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Move.xml");
-			//m_REINFORCE_Turn.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Turn.xml");
-			//m_REINFORCE_Fired.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Fired.xml");
+			m_REINFORCE_Turn.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Turn.xml");
+			m_REINFORCE_Fired.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Fired.xml");
 		}
 
 		/*-----------------------*/
@@ -173,8 +164,12 @@ namespace RLProcess
 			for (int i = 0; i < 10; i++)
 			{
 				m_REINFORCE_Move.RunREINFORCE();
+				m_REINFORCE_Turn.RunREINFORCE();
+				m_REINFORCE_Fired.RunREINFORCE();
 			}
 			m_REINFORCE_Move.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Move.xml");
+			m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Turn.xml");
+			m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Fired.xml");
 		}
 
 		/*----------------------------------------------------------*/
@@ -219,6 +214,8 @@ namespace RLProcess
 		/* if the agent explorates his policy by being applied epsilon-greedy... */
 		/*-----------------------------------------------------------------------*/
 		void GenerateTrajectoriesForREINFORCE_ForExploration() {
+			//Debug.LogFormat("num of episode: {0}", m_Episodes.Count);
+			//Debug.LogFormat("length of episode: {0}", m_Episodes[1].m_LogAITank.Count);
 			//[Move] Action
             for (int n = 0; n < m_Episodes.Count; n++){
 				List<REINFORCE.OneFrameData> buf_traj = new List<REINFORCE.OneFrameData>();
@@ -236,8 +233,10 @@ namespace RLProcess
 					buf_ofd.Reward = m_Episodes[n].m_LogAITank[t].m_Reward;
 					//add
 					buf_traj.Add((REINFORCE.OneFrameData)buf_ofd.Clone());
-                }
+					//Debug.LogFormat("count: {0}", buf_traj.Count);
+				}
 				m_REINFORCE_Move.m_Trajectories.Add(new List<REINFORCE.OneFrameData>(buf_traj));
+				//Debug.LogFormat("length: {0}", m_REINFORCE_Move.m_Trajectories[0].Count);
             }
 			//[Turn] Action
 			for (int n = 0; n < m_Episodes.Count; n++)
@@ -355,7 +354,7 @@ namespace RLProcess
 					//add
 					buf_traj.Add((REINFORCE.OneFrameData)buf_ofd.Clone());
 				}
-				m_REINFORCE_Move.m_Trajectories.Add(new List<REINFORCE.OneFrameData>(buf_traj));
+				m_REINFORCE_Fired.m_Trajectories.Add(new List<REINFORCE.OneFrameData>(buf_traj));
 			}
 		}
 
