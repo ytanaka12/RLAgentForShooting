@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace RLProcess
 {
 	[Serializable]
-	public class GaussianPolicyModel
+	public class GaussianPolicyModel : ICloneable
 	{
 		public float[] m_Mean;
 		public float m_StandDev;
@@ -18,6 +18,14 @@ namespace RLProcess
 		private float m_Action;
 
 		private string serializeDataPath;
+
+		/*-------*/
+		/* Clone */
+		/*-------*/
+		public object Clone()
+		{
+			return MemberwiseClone();
+		}
 
 		public GaussianPolicyModel() {
 		}

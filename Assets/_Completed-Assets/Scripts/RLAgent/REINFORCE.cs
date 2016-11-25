@@ -10,7 +10,7 @@ namespace RLProcess
 	public class REINFORCE : MonoBehaviour
 	{
 		/* Must need to scecify these parameter */
-		private const int m_NumKernel = 3;
+		//private const int m_NumKernel = 3;
 		private const int m_StateDim = 3;
 
 		public class OneFrameData : ICloneable
@@ -97,22 +97,6 @@ namespace RLProcess
 			GradientAscent();
 		}
 
-		/*---------------------------------------*/
-		/* Prepare state vector, class to vector */
-		/*---------------------------------------*/
-		//float[] PrepareStateVector(int n, int t) {
-		//	List<float> state = new List<float>();
-		//	List<OneFrameData> bufdata = m_Trajectory[0];
-		//	OneFrameData buf = bufdata[0];
-		//	state.Add(m_Trajectory[n][t].m_State.m_Position.x);
-		//	state.Add(m_Trajectory[t].m_State.m_Position.z);
-		//	state.Add(m_Trajectory[t].m_State.m_Euler.y);
-
-		//	float[] stateArray = state.ToArray();
-
-		//	return (float[])stateArray.Clone();
-		//}
-
 		/*------------*/
 		/* add vector */
 		/*------------*/
@@ -139,8 +123,17 @@ namespace RLProcess
 		/*---------------------------------*/
 		public void GradientAscent() {
 			float eps = 0.1f;
-			float[] gAscentMean = new float[3] { 0.0f, 0.0f, 0.0f};
+			float[] gAscentMean = new float[m_GaussianPolicyModel.m_Mean.Length];
+			//initialize
+			for (int i = 0; i < gAscentMean.Length; i++) {
+				gAscentMean[i] = 0.0f;
+			}
 			float gAscentStandDev = 0.0f;
+
+			float[] befMean = new float[m_GaussianPolicyModel.m_Mean.Length];
+			befMean = (float[])m_GaussianPolicyModel.m_Mean.Clone();
+			float befStandDev = new float();
+			befStandDev = m_GaussianPolicyModel.m_StandDev;
 
 			for (int n = 0; n < m_Trajectories.Count ; n++) {
 				for (int t = 0; t < m_Trajectories[n].Count; t++) {
@@ -165,7 +158,13 @@ namespace RLProcess
 			}
 			m_GaussianPolicyModel.m_StandDev += eps * gAscentStandDev;
 
-			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][50].State.Clone());
+			/* limit */
+			if (m_GaussianPolicyModel.m_StandDev < 20.0f) {
+				m_GaussianPolicyModel.m_Mean = (float[])befMean.Clone();
+				m_GaussianPolicyModel.m_StandDev = befStandDev;
+			}
+
+			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][10].State.Clone());
             float buf = m_GaussianPolicyModel.CalcActionMean();
 			Debug.LogFormat("ActionMean: {0}", buf);
 
@@ -174,6 +173,15 @@ namespace RLProcess
 			//{
 			//	return;
 			//}
+		}
+
+		/*----------------------------*/
+		/* Get Action based on policy */
+		/*----------------------------*/
+		public float GetAction(float[] state) {
+			m_GaussianPolicyModel.SetState((float[])state.Clone());
+			float ans = m_GaussianPolicyModel.CalcActionMean();
+			return ans;
 		}
 
 		/*----------------*/

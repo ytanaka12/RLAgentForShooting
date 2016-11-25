@@ -62,8 +62,11 @@ namespace RLProcess
 		private string fNameLoadEpisode = "/LogFiles/log_test.xml";
 		private string fNameSaveEpisode = "/LogFiles/log.xml";
 
-		private string[] fNamesOfLoadEpisodes = { "/LogFiles/log_test.xml",
-												  "/LogFiles/log_test.xml" };
+		private string[] fNamesOfLoadEpisodes = { "/LogFiles/log_play01.xml",
+												  "/LogFiles/log_play01.xml",
+												  "/LogFiles/log_play02.xml"};
+
+		private const float p_Dimensionless = 10.0f;
 
 		/*-----------------------------*/
 		/* Use this for initialization */
@@ -74,6 +77,8 @@ namespace RLProcess
 			if (m_GameManager == null) {
 				Debug.LogFormat("error: can not get component of GameManager");
 			}
+
+			ClickOnGPM_Load();
 
 			//LoadEpisode(fNameLoadEpisode);
 		}
@@ -185,8 +190,8 @@ namespace RLProcess
 		/*----------*/
 		void SetAITankInfo() {
 			//Get State from GameManager
-			m_AITankInfo.m_State.m_Position = m_GameManager.m_Tanks[1].m_Instance.transform.position;
-			m_AITankInfo.m_State.m_Euler = m_GameManager.m_Tanks[1].m_Instance.transform.eulerAngles;
+			m_AITankInfo.m_State.m_Position = m_GameManager.m_Tanks[1].m_Instance.transform.position / p_Dimensionless;
+			m_AITankInfo.m_State.m_Euler = m_GameManager.m_Tanks[1].m_Instance.transform.eulerAngles * Mathf.PI / 180f;
 
 			//Get Action
 			m_AITankInfo.m_Action.m_Fired = m_GameManager.m_Tanks[1].m_Shooting.m_FireForAI;
@@ -200,8 +205,8 @@ namespace RLProcess
 		void SetHuTankInfo()
 		{
 			//Get State from GameManager
-			m_HuTankInfo.m_State.m_Position = m_GameManager.m_Tanks[0].m_Instance.transform.position;
-			m_HuTankInfo.m_State.m_Euler = m_GameManager.m_Tanks[0].m_Instance.transform.eulerAngles;
+			m_HuTankInfo.m_State.m_Position = m_GameManager.m_Tanks[0].m_Instance.transform.position / p_Dimensionless;
+			m_HuTankInfo.m_State.m_Euler = m_GameManager.m_Tanks[0].m_Instance.transform.eulerAngles * Mathf.PI / 180f;
 
 			//Get Action
 			m_HuTankInfo.m_Action.m_Fired = m_GameManager.m_Tanks[0].m_Shooting.m_FireForAI;
@@ -362,11 +367,11 @@ namespace RLProcess
 		/* Play Back */
 		/*-----------*/
 		void ForPlayBack(int iFrame) {
-			m_GameManager.m_Tanks[0].m_Instance.transform.position = m_Episode.m_LogHuTank[iFrame].m_State.m_Position;
-			m_GameManager.m_Tanks[0].m_Instance.transform.eulerAngles = m_Episode.m_LogHuTank[iFrame].m_State.m_Euler;
+			m_GameManager.m_Tanks[0].m_Instance.transform.position = m_Episode.m_LogHuTank[iFrame].m_State.m_Position * p_Dimensionless;
+			m_GameManager.m_Tanks[0].m_Instance.transform.eulerAngles = m_Episode.m_LogHuTank[iFrame].m_State.m_Euler * 180f / Mathf.PI;
 			m_GameManager.m_Tanks[0].m_Shooting.m_FireForAI = m_Episode.m_LogHuTank[iFrame].m_Action.m_Fired;
-            m_GameManager.m_Tanks[1].m_Instance.transform.position = m_Episode.m_LogAITank[iFrame].m_State.m_Position;
-			m_GameManager.m_Tanks[1].m_Instance.transform.eulerAngles = m_Episode.m_LogAITank[iFrame].m_State.m_Euler;
+            m_GameManager.m_Tanks[1].m_Instance.transform.position = m_Episode.m_LogAITank[iFrame].m_State.m_Position * p_Dimensionless;
+			m_GameManager.m_Tanks[1].m_Instance.transform.eulerAngles = m_Episode.m_LogAITank[iFrame].m_State.m_Euler * 180f / Mathf.PI;
 			m_GameManager.m_Tanks[1].m_Shooting.m_FireForAI = m_Episode.m_LogAITank[iFrame].m_Action.m_Fired;
 			//Debug.LogFormat("play back");
 		}
@@ -406,7 +411,20 @@ namespace RLProcess
 			//default mode
 			if (m_IsRecording == true || m_IsPlayBack == false || m_Episode.m_LogAITank.Count < 1)
 			{
-				SetRandomAction();
+				float[] state = new float[3];
+				Vector3 relPos = m_HuTankInfo.m_State.m_Position - m_AITankInfo.m_State.m_Position;
+				Vector3 relEul = m_HuTankInfo.m_State.m_Euler - m_AITankInfo.m_State.m_Euler;
+				state[0] = relPos.x;
+				state[1] = relPos.z;
+				state[2] = relEul.y;
+				float aMove = m_REINFORCE_Move.GetAction((float[])state.Clone());
+				aMove = Mathf.Clamp(aMove, -1.0f, 1.0f);
+				float aTurn = m_REINFORCE_Turn.GetAction((float[])state.Clone());
+				aTurn = Mathf.Clamp(aTurn, -1.0f, 1.0f);
+				float aFired = m_REINFORCE_Fired.GetAction((float[])state.Clone());
+				Debug.LogFormat("move: {0}, turn: {1}, fire: {2}", aMove, aTurn, aFired);
+				SetAction(aMove, aTurn, Convert.ToBoolean(aFired));
+				//SetRandomAction();
 				iFrame = 0;
 			}
 			//play back mode
@@ -421,6 +439,9 @@ namespace RLProcess
 				m_IsPlayBack = false;
 				iFrame = 0;
 			}
+			else {
+			}
+
 		}
 
 		/*----------------------------*/
@@ -428,11 +449,13 @@ namespace RLProcess
 		/*----------------------------*/
 		void FixedUpdate()
 		{
-			SwitchMode();
 
 			//set states
 			SetAITankInfo();
 			SetHuTankInfo();
+
+			//set action
+			SwitchMode();
 
 			if (m_IsRecording == true)
 			{

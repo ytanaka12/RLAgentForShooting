@@ -1,35 +1,89 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <GaussianPolicyModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <m_Mean>
-    <float>5.976622</float>
-    <float>3.81800079</float>
-    <float>73.05835</float>
+    <float>-15.1569538</float>
+    <float>-8.479021</float>
+    <float>-7.96996975</float>
+    <float>-11.9917955</float>
+    <float>-8.888618</float>
+    <float>56.28208</float>
+    <float>12.5327806</float>
+    <float>-11.3399611</float>
+    <float>-6.55436</float>
   </m_Mean>
-  <m_StandDev>530.0308</m_StandDev>
+  <m_StandDev>25.5442314</m_StandDev>
   <m_GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
-        <float>-15</float>
-        <float>33</float>
-        <float>-176</float>
+        <float>0</float>
+        <float>0</float>
+        <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>100</m_Sigma>
+      <m_Sigma>10</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
-        <float>-20</float>
-        <float>-40</float>
-        <float>-180</float>
+        <float>1</float>
+        <float>0</float>
+        <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>100</m_Sigma>
+      <m_Sigma>10</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
-        <float>-10</float>
-        <float>30</float>
-        <float>-160</float>
+        <float>-1</float>
+        <float>0</float>
+        <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>100</m_Sigma>
+      <m_Sigma>10</m_Sigma>
+    </GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>0</float>
+        <float>1</float>
+        <float>0</float>
+      </m_KernelCenter>
+      <m_Sigma>10</m_Sigma>
+    </GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>0</float>
+        <float>-1</float>
+        <float>0</float>
+      </m_KernelCenter>
+      <m_Sigma>10</m_Sigma>
+    </GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>1</float>
+        <float>1</float>
+        <float>0</float>
+      </m_KernelCenter>
+      <m_Sigma>10</m_Sigma>
+    </GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>1</float>
+        <float>-1</float>
+        <float>0</float>
+      </m_KernelCenter>
+      <m_Sigma>10</m_Sigma>
+    </GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>-1</float>
+        <float>1</float>
+        <float>0</float>
+      </m_KernelCenter>
+      <m_Sigma>10</m_Sigma>
+    </GaussianKernel>
+    <GaussianKernel>
+      <m_KernelCenter>
+        <float>-1</float>
+        <float>-1</float>
+        <float>0</float>
+      </m_KernelCenter>
+      <m_Sigma>10</m_Sigma>
     </GaussianKernel>
   </m_GaussianKernel>
 </GaussianPolicyModel>
