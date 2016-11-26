@@ -59,14 +59,10 @@ namespace RLProcess
 		private REINFORCE m_REINFORCE_Turn = new REINFORCE();
 		private REINFORCE m_REINFORCE_Fired = new REINFORCE();
 
-		private string fNameLoadEpisode = "/LogFiles/log_test.xml";
+		private string fNameLoadEpisode = "/LogFiles/log_play01.xml";
 		private string fNameSaveEpisode = "/LogFiles/log.xml";
 
-		private string[] fNamesOfLoadEpisodes = { "/LogFiles/log_play01.xml",
-												  "/LogFiles/log_play01.xml",
-												  "/LogFiles/log_play02.xml"};
-
-		private const float p_Dimensionless = 10.0f;
+		private string[] fNamesOfLoadEpisodes = { "/LogFiles/log_play01.xml"};
 
 		/*-----------------------------*/
 		/* Use this for initialization */
@@ -81,6 +77,15 @@ namespace RLProcess
 			ClickOnGPM_Load();
 
 			//LoadEpisode(fNameLoadEpisode);
+
+			//GaussianPolicyModel GPM = new GaussianPolicyModel(100, 3);
+			//for (int i = 0; i < 100; i++)
+			//{
+			//	GPM.m_Mean[i] = (float)i;
+			//	GPM.m_GaussianKernel[i].m_Sigma = 10f;
+   //         }
+			//GPM.m_StandDev = 10f;
+			//GPM.OutputParamtersToXML("/GPMs/xmltemplate.xml");
 		}
 
 		/*-------------------------*/
@@ -118,7 +123,8 @@ namespace RLProcess
 			}
 			Debug.LogFormat("{0} Episodes were Loaded.", fNamesOfLoadEpisodes.Length);
 			//Generate Trajectories
-			GenerateTrajectoriesForREINFORCE_ForExploration();
+			//GenerateTrajectoriesForREINFORCE_ForExploration();
+			GenerateTrajectoriesForREINFORCE_ForMimic();
         }
 
 		public void ClickOnAdd2Episodes() {
@@ -157,24 +163,31 @@ namespace RLProcess
 		/*---------------------------------------*/
 		public void ClickOnGPM_Load() {
 			//PGLearn.m_GaussianPolicyModel.InputParametersFromXML("/GPMData.xml");
-			m_REINFORCE_Move.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Move.xml");
-			m_REINFORCE_Turn.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Turn.xml");
-			m_REINFORCE_Fired.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Fired.xml");
+			//m_REINFORCE_Move.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Move.xml");
+			//m_REINFORCE_Turn.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Turn.xml");
+			//m_REINFORCE_Fired.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Fired.xml");
+			m_REINFORCE_Move.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_k100_40x40_Move.xml");
+			m_REINFORCE_Turn.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_k100_40x40_Turn.xml");
+			m_REINFORCE_Fired.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_k100_40x40_Fired.xml");
 		}
 
 		/*-----------------------*/
 		/* ClickOn Policy Update */
 		/*-----------------------*/
 		public void ClickOnGPM_Update() {
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 1000; i++)
 			{
 				m_REINFORCE_Move.RunREINFORCE();
 				m_REINFORCE_Turn.RunREINFORCE();
 				m_REINFORCE_Fired.RunREINFORCE();
 			}
-			m_REINFORCE_Move.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Move.xml");
-			m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Turn.xml");
-			m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Fired.xml");
+			Debug.LogFormat("num of kernels: {0}", m_REINFORCE_Move.m_GaussianPolicyModel.m_Mean.Length);
+			//m_REINFORCE_Move.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Move.xml");
+			//m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Turn.xml");
+			//m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Fired.xml");
+			m_REINFORCE_Move.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Move.xml");
+			m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Turn.xml");
+			m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Fired.xml");
 		}
 
 		/*----------------------------------------------------------*/
@@ -190,7 +203,7 @@ namespace RLProcess
 		/*----------*/
 		void SetAITankInfo() {
 			//Get State from GameManager
-			m_AITankInfo.m_State.m_Position = m_GameManager.m_Tanks[1].m_Instance.transform.position / p_Dimensionless;
+			m_AITankInfo.m_State.m_Position = m_GameManager.m_Tanks[1].m_Instance.transform.position;
 			m_AITankInfo.m_State.m_Euler = m_GameManager.m_Tanks[1].m_Instance.transform.eulerAngles * Mathf.PI / 180f;
 
 			//Get Action
@@ -205,7 +218,7 @@ namespace RLProcess
 		void SetHuTankInfo()
 		{
 			//Get State from GameManager
-			m_HuTankInfo.m_State.m_Position = m_GameManager.m_Tanks[0].m_Instance.transform.position / p_Dimensionless;
+			m_HuTankInfo.m_State.m_Position = m_GameManager.m_Tanks[0].m_Instance.transform.position;
 			m_HuTankInfo.m_State.m_Euler = m_GameManager.m_Tanks[0].m_Instance.transform.eulerAngles * Mathf.PI / 180f;
 
 			//Get Action
@@ -228,10 +241,11 @@ namespace RLProcess
 					REINFORCE.OneFrameData buf_ofd = new REINFORCE.OneFrameData();
 					//state
 					Vector3 relPos = m_Episodes[n].m_LogHuTank[t].m_State.m_Position - m_Episodes[n].m_LogAITank[t].m_State.m_Position;
-					Vector3 relEul = m_Episodes[n].m_LogHuTank[t].m_State.m_Euler - m_Episodes[n].m_LogAITank[t].m_State.m_Euler;
+					Vector3 gloEul = m_Episodes[n].m_LogAITank[t].m_State.m_Euler;
+					relPos = Quaternion.Euler(-gloEul * 180f / Mathf.PI) * relPos;
 					buf_ofd.State[0] = relPos.x;
 					buf_ofd.State[1] = relPos.z;
-					buf_ofd.State[2] = relEul.y;
+					//buf_ofd.State[2] = relEul.y;
 					//action
 					buf_ofd.Action = m_Episodes[n].m_LogAITank[t].m_Action.m_MovementInput; //Move
 					//reward
@@ -252,10 +266,11 @@ namespace RLProcess
 					REINFORCE.OneFrameData buf_ofd = new REINFORCE.OneFrameData();
 					//state
 					Vector3 relPos = m_Episodes[n].m_LogHuTank[t].m_State.m_Position - m_Episodes[n].m_LogAITank[t].m_State.m_Position;
-					Vector3 relEul = m_Episodes[n].m_LogHuTank[t].m_State.m_Euler - m_Episodes[n].m_LogAITank[t].m_State.m_Euler;
+					Vector3 gloEul = m_Episodes[n].m_LogAITank[t].m_State.m_Euler;
+					relPos = Quaternion.Euler(-gloEul * 180f / Mathf.PI) * relPos;
 					buf_ofd.State[0] = relPos.x;
 					buf_ofd.State[1] = relPos.z;
-					buf_ofd.State[2] = relEul.y;
+					//buf_ofd.State[2] = relEul.y;
 					//action
 					buf_ofd.Action = m_Episodes[n].m_LogAITank[t].m_Action.m_TurnInput; //Turn
 					//reward
@@ -274,10 +289,11 @@ namespace RLProcess
 					REINFORCE.OneFrameData buf_ofd = new REINFORCE.OneFrameData();
 					//state
 					Vector3 relPos = m_Episodes[n].m_LogHuTank[t].m_State.m_Position - m_Episodes[n].m_LogAITank[t].m_State.m_Position;
-					Vector3 relEul = m_Episodes[n].m_LogHuTank[t].m_State.m_Euler - m_Episodes[n].m_LogAITank[t].m_State.m_Euler;
+					Vector3 gloEul = m_Episodes[n].m_LogAITank[t].m_State.m_Euler;
+					relPos = Quaternion.Euler(-gloEul * 180f / Mathf.PI) * relPos;
 					buf_ofd.State[0] = relPos.x;
 					buf_ofd.State[1] = relPos.z;
-					buf_ofd.State[2] = relEul.y;
+					//buf_ofd.State[2] = relEul.y;
 					//action
 					buf_ofd.Action = Convert.ToSingle(m_Episodes[n].m_LogAITank[t].m_Action.m_Fired); //Fired
 					//reward
@@ -304,10 +320,11 @@ namespace RLProcess
 					REINFORCE.OneFrameData buf_ofd = new REINFORCE.OneFrameData();
 					//state
 					Vector3 relPos = m_Episodes[n].m_LogAITank[t].m_State.m_Position - m_Episodes[n].m_LogHuTank[t].m_State.m_Position;
-					Vector3 relEul = m_Episodes[n].m_LogAITank[t].m_State.m_Euler - m_Episodes[n].m_LogHuTank[t].m_State.m_Euler;
+					Vector3 gloEul = m_Episodes[n].m_LogHuTank[t].m_State.m_Euler;
+					relPos = Quaternion.Euler(-gloEul * 180f / Mathf.PI) * relPos;
 					buf_ofd.State[0] = relPos.x;
 					buf_ofd.State[1] = relPos.z;
-					buf_ofd.State[2] = relEul.y;
+					//buf_ofd.State[2] = relEul.y;
 					//action
 					buf_ofd.Action = m_Episodes[n].m_LogHuTank[t].m_Action.m_MovementInput; //Move
 																							//reward
@@ -326,10 +343,11 @@ namespace RLProcess
 					REINFORCE.OneFrameData buf_ofd = new REINFORCE.OneFrameData();
 					//state
 					Vector3 relPos = m_Episodes[n].m_LogAITank[t].m_State.m_Position - m_Episodes[n].m_LogHuTank[t].m_State.m_Position;
-					Vector3 relEul = m_Episodes[n].m_LogAITank[t].m_State.m_Euler - m_Episodes[n].m_LogHuTank[t].m_State.m_Euler;
+					Vector3 gloEul = m_Episodes[n].m_LogHuTank[t].m_State.m_Euler;
+					relPos = Quaternion.Euler(-gloEul * 180f / Mathf.PI) * relPos;
 					buf_ofd.State[0] = relPos.x;
 					buf_ofd.State[1] = relPos.z;
-					buf_ofd.State[2] = relEul.y;
+					//buf_ofd.State[2] = relEul.y;
 					//action
 					buf_ofd.Action = m_Episodes[n].m_LogHuTank[t].m_Action.m_TurnInput; //Turn
 																						//reward
@@ -348,10 +366,11 @@ namespace RLProcess
 					REINFORCE.OneFrameData buf_ofd = new REINFORCE.OneFrameData();
 					//state
 					Vector3 relPos = m_Episodes[n].m_LogAITank[t].m_State.m_Position - m_Episodes[n].m_LogHuTank[t].m_State.m_Position;
-					Vector3 relEul = m_Episodes[n].m_LogAITank[t].m_State.m_Euler - m_Episodes[n].m_LogHuTank[t].m_State.m_Euler;
+					Vector3 gloEul = m_Episodes[n].m_LogHuTank[t].m_State.m_Euler;
+					relPos = Quaternion.Euler(-gloEul * 180f / Mathf.PI) * relPos;
 					buf_ofd.State[0] = relPos.x;
 					buf_ofd.State[1] = relPos.z;
-					buf_ofd.State[2] = relEul.y;
+					//buf_ofd.State[2] = relEul.y;
 					//action
 					buf_ofd.Action = Convert.ToSingle(m_Episodes[n].m_LogHuTank[t].m_Action.m_Fired); //Fired
 					//reward
@@ -367,10 +386,10 @@ namespace RLProcess
 		/* Play Back */
 		/*-----------*/
 		void ForPlayBack(int iFrame) {
-			m_GameManager.m_Tanks[0].m_Instance.transform.position = m_Episode.m_LogHuTank[iFrame].m_State.m_Position * p_Dimensionless;
+			m_GameManager.m_Tanks[0].m_Instance.transform.position = m_Episode.m_LogHuTank[iFrame].m_State.m_Position;
 			m_GameManager.m_Tanks[0].m_Instance.transform.eulerAngles = m_Episode.m_LogHuTank[iFrame].m_State.m_Euler * 180f / Mathf.PI;
 			m_GameManager.m_Tanks[0].m_Shooting.m_FireForAI = m_Episode.m_LogHuTank[iFrame].m_Action.m_Fired;
-            m_GameManager.m_Tanks[1].m_Instance.transform.position = m_Episode.m_LogAITank[iFrame].m_State.m_Position * p_Dimensionless;
+			m_GameManager.m_Tanks[1].m_Instance.transform.position = m_Episode.m_LogAITank[iFrame].m_State.m_Position;
 			m_GameManager.m_Tanks[1].m_Instance.transform.eulerAngles = m_Episode.m_LogAITank[iFrame].m_State.m_Euler * 180f / Mathf.PI;
 			m_GameManager.m_Tanks[1].m_Shooting.m_FireForAI = m_Episode.m_LogAITank[iFrame].m_Action.m_Fired;
 			//Debug.LogFormat("play back");
@@ -411,21 +430,29 @@ namespace RLProcess
 			//default mode
 			if (m_IsRecording == true || m_IsPlayBack == false || m_Episode.m_LogAITank.Count < 1)
 			{
-				float[] state = new float[3];
+				float[] state = new float[2];
 				Vector3 relPos = m_HuTankInfo.m_State.m_Position - m_AITankInfo.m_State.m_Position;
-				Vector3 relEul = m_HuTankInfo.m_State.m_Euler - m_AITankInfo.m_State.m_Euler;
+				Vector3 gloEul = m_AITankInfo.m_State.m_Euler;
+				//Vector3 relPos = m_AITankInfo.m_State.m_Position - m_HuTankInfo.m_State.m_Position;
+				//Vector3 relEul = m_AITankInfo.m_State.m_Euler - m_HuTankInfo.m_State.m_Euler;
+				relPos = Quaternion.Euler(-gloEul * 180f / Mathf.PI) * relPos;
 				state[0] = relPos.x;
 				state[1] = relPos.z;
-				state[2] = relEul.y;
+				//state[2] = relEul.y;
 				float aMove = m_REINFORCE_Move.GetAction((float[])state.Clone());
 				aMove = Mathf.Clamp(aMove, -1.0f, 1.0f);
 				float aTurn = m_REINFORCE_Turn.GetAction((float[])state.Clone());
 				aTurn = Mathf.Clamp(aTurn, -1.0f, 1.0f);
 				float aFired = m_REINFORCE_Fired.GetAction((float[])state.Clone());
-				Debug.LogFormat("move: {0}, turn: {1}, fire: {2}", aMove, aTurn, aFired);
+				//Debug.LogFormat("move: {0}, turn: {1}, fire: {2}", aMove, aTurn, aFired);
+				Debug.LogFormat("move: {0}, turn: {1}, fire: {2}", m_REINFORCE_Move.GetAction((float[])state.Clone()), m_REINFORCE_Turn.GetAction((float[])state.Clone()), m_REINFORCE_Fired.GetAction((float[])state.Clone()));
 				SetAction(aMove, aTurn, Convert.ToBoolean(aFired));
 				//SetRandomAction();
 				iFrame = 0;
+
+				//float bufsd_m = m_REINFORCE_Move.m_GaussianPolicyModel.m_StandDev;
+				//float bufsd_t = m_REINFORCE_Turn.m_GaussianPolicyModel.m_StandDev;
+				//Debug.LogFormat("m: {0}, t: {1}", bufsd_m, bufsd_t);
 			}
 			//play back mode
 			else if (m_IsPlayBack == true && iFrame < m_Episode.m_LogAITank.Count)

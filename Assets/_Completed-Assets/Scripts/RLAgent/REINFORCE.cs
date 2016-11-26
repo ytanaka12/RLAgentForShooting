@@ -11,7 +11,7 @@ namespace RLProcess
 	{
 		/* Must need to scecify these parameter */
 		//private const int m_NumKernel = 3;
-		private const int m_StateDim = 3;
+		private const int m_StateDim = 2;
 
 		public class OneFrameData : ICloneable
 		{
@@ -142,7 +142,7 @@ namespace RLProcess
 
 					//set action
 					m_GaussianPolicyModel.SetAction(m_Trajectories[n][t].Action);
-					//gpm.SetAction(5.6f);
+					//m_GaussianPolicyModel.SetAction(1.6f);
 
 					//calculate Gradient
 					float[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
@@ -159,14 +159,14 @@ namespace RLProcess
 			m_GaussianPolicyModel.m_StandDev += eps * gAscentStandDev;
 
 			/* limit */
-			if (m_GaussianPolicyModel.m_StandDev < 20.0f) {
+			if (m_GaussianPolicyModel.m_StandDev < 1.0f) {
 				m_GaussianPolicyModel.m_Mean = (float[])befMean.Clone();
 				m_GaussianPolicyModel.m_StandDev = befStandDev;
 			}
 
 			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][10].State.Clone());
             float buf = m_GaussianPolicyModel.CalcActionMean();
-			Debug.LogFormat("ActionMean: {0}", buf);
+			//Debug.LogFormat("ActionMean: {0}", buf);
 
 			//terminate judge
 			//if (gAscentMean[0] < 0.1f)
