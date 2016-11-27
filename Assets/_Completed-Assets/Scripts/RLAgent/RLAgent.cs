@@ -73,19 +73,8 @@ namespace RLProcess
 			if (m_GameManager == null) {
 				Debug.LogFormat("error: can not get component of GameManager");
 			}
-
 			ClickOnGPM_Load();
-
 			//LoadEpisode(fNameLoadEpisode);
-
-			//GaussianPolicyModel GPM = new GaussianPolicyModel(100, 3);
-			//for (int i = 0; i < 100; i++)
-			//{
-			//	GPM.m_Mean[i] = (float)i;
-			//	GPM.m_GaussianKernel[i].m_Sigma = 10f;
-   //         }
-			//GPM.m_StandDev = 10f;
-			//GPM.OutputParamtersToXML("/GPMs/xmltemplate.xml");
 		}
 
 		/*-------------------------*/
@@ -232,8 +221,6 @@ namespace RLProcess
 		/* if the agent explorates his policy by being applied epsilon-greedy... */
 		/*-----------------------------------------------------------------------*/
 		void GenerateTrajectoriesForREINFORCE_ForExploration() {
-			//Debug.LogFormat("num of episode: {0}", m_Episodes.Count);
-			//Debug.LogFormat("length of episode: {0}", m_Episodes[1].m_LogAITank.Count);
 			//[Move] Action
             for (int n = 0; n < m_Episodes.Count; n++){
 				List<REINFORCE.OneFrameData> buf_traj = new List<REINFORCE.OneFrameData>();
@@ -430,29 +417,25 @@ namespace RLProcess
 			//default mode
 			if (m_IsRecording == true || m_IsPlayBack == false || m_Episode.m_LogAITank.Count < 1)
 			{
+				//set state
 				float[] state = new float[2];
 				Vector3 relPos = m_HuTankInfo.m_State.m_Position - m_AITankInfo.m_State.m_Position;
 				Vector3 gloEul = m_AITankInfo.m_State.m_Euler;
-				//Vector3 relPos = m_AITankInfo.m_State.m_Position - m_HuTankInfo.m_State.m_Position;
-				//Vector3 relEul = m_AITankInfo.m_State.m_Euler - m_HuTankInfo.m_State.m_Euler;
 				relPos = Quaternion.Euler(-gloEul * 180f / Mathf.PI) * relPos;
 				state[0] = relPos.x;
 				state[1] = relPos.z;
 				//state[2] = relEul.y;
+
 				float aMove = m_REINFORCE_Move.GetAction((float[])state.Clone());
 				aMove = Mathf.Clamp(aMove, -1.0f, 1.0f);
 				float aTurn = m_REINFORCE_Turn.GetAction((float[])state.Clone());
 				aTurn = Mathf.Clamp(aTurn, -1.0f, 1.0f);
 				float aFired = m_REINFORCE_Fired.GetAction((float[])state.Clone());
-				//Debug.LogFormat("move: {0}, turn: {1}, fire: {2}", aMove, aTurn, aFired);
-				Debug.LogFormat("move: {0}, turn: {1}, fire: {2}", m_REINFORCE_Move.GetAction((float[])state.Clone()), m_REINFORCE_Turn.GetAction((float[])state.Clone()), m_REINFORCE_Fired.GetAction((float[])state.Clone()));
+				Debug.LogFormat("move: {0}, turn: {1}, fire: {2}", aMove, aTurn, aFired);
 				SetAction(aMove, aTurn, Convert.ToBoolean(aFired));
 				//SetRandomAction();
 				iFrame = 0;
 
-				//float bufsd_m = m_REINFORCE_Move.m_GaussianPolicyModel.m_StandDev;
-				//float bufsd_t = m_REINFORCE_Turn.m_GaussianPolicyModel.m_StandDev;
-				//Debug.LogFormat("m: {0}, t: {1}", bufsd_m, bufsd_t);
 			}
 			//play back mode
 			else if (m_IsPlayBack == true && iFrame < m_Episode.m_LogAITank.Count)

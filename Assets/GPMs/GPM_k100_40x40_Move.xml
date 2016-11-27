@@ -4,105 +4,105 @@
     <float>0</float>
     <float>0</float>
     <float>0</float>
-    <float>-1.390181E-39</float>
-    <float>-5.032568E-32</float>
-    <float>-3.23815045E-26</float>
-    <float>-2.358477E-22</float>
-    <float>1.60519708E-17</float>
-    <float>4.585977E-14</float>
-    <float>1.07401943E-09</float>
+    <float>-3.941539E-39</float>
+    <float>-1.41988139E-31</float>
+    <float>-9.201039E-26</float>
+    <float>-7.907014E-22</float>
+    <float>3.335997E-17</float>
+    <float>9.83312349E-14</float>
+    <float>2.65078981E-09</float>
     <float>0</float>
     <float>0</float>
-    <float>-4.202494E-42</float>
-    <float>-1.35572923E-32</float>
-    <float>-4.84513043E-25</float>
-    <float>-3.11961862E-19</float>
-    <float>-3.4925917E-15</float>
-    <float>2.70439E-12</float>
-    <float>8.280899E-09</float>
-    <float>5.82643736E-07</float>
+    <float>-1.210021E-41</float>
+    <float>-3.810564E-32</float>
+    <float>-1.36699675E-24</float>
+    <float>-8.862526E-19</float>
+    <float>-1.0107324E-14</float>
+    <float>4.90905537E-12</float>
+    <float>1.74769461E-08</float>
+    <float>1.29050727E-06</float>
     <float>0</float>
     <float>0</float>
-    <float>-1.21559445E-36</float>
-    <float>-2.3906318E-27</float>
-    <float>-8.54371E-20</float>
-    <float>-5.5011107E-14</float>
-    <float>-6.210243E-10</float>
-    <float>-9.219835E-08</float>
-    <float>3.129356E-05</float>
-    <float>0.00185764849</float>
+    <float>-3.40855982E-36</float>
+    <float>-6.71937E-27</float>
+    <float>-2.41051029E-19</float>
+    <float>-1.56279828E-13</float>
+    <float>-1.79258852E-09</float>
+    <float>-2.99593552E-07</float>
+    <float>6.410287E-05</float>
+    <float>0.00405606767</float>
     <float>0</float>
     <float>0</float>
-    <float>-3.925984E-33</float>
-    <float>-7.721027E-24</float>
-    <float>-2.75935885E-16</float>
-    <float>-1.77669615E-10</float>
-    <float>-2.00623253E-06</float>
-    <float>-0.0003439636</float>
-    <float>0.00366287678</float>
-    <float>0.126801357</float>
+    <float>-1.10085604E-32</float>
+    <float>-2.17015667E-23</float>
+    <float>-7.78520528E-16</float>
+    <float>-5.04737863E-10</float>
+    <float>-5.79051539E-06</float>
+    <float>-0.001059333</float>
+    <float>0.00599242467</float>
+    <float>0.2672785</float>
     <float>0</float>
-    <float>-1.010336E-42</float>
-    <float>-2.32237976E-31</float>
-    <float>-4.567316E-22</float>
-    <float>-1.63227721E-14</float>
-    <float>-1.05098614E-08</float>
-    <float>-0.000118678705</float>
-    <float>-0.0204539746</float>
-    <float>0.05725158</float>
-    <float>0.413466722</float>
+    <float>-2.792788E-42</float>
+    <float>-6.512028E-31</float>
+    <float>-1.28373887E-21</float>
+    <float>-4.60528154E-14</float>
+    <float>-2.985723E-08</float>
+    <float>-0.000342536281</float>
+    <float>-0.06286432</float>
+    <float>0.04128684</float>
+    <float>0.795469642</float>
     <float>0</float>
-    <float>-1.160275E-42</float>
-    <float>-2.51617481E-31</float>
-    <float>-4.94841566E-22</float>
-    <float>-1.768482E-14</float>
-    <float>-1.13868817E-08</float>
-    <float>-0.0001285823</float>
-    <float>-0.02217526</float>
-    <float>0.05077235</float>
-    <float>0.197061136</float>
-    <float>0</float>
-    <float>0</float>
-    <float>-4.99309335E-33</float>
-    <float>-9.819642E-24</float>
-    <float>-3.509376E-16</float>
-    <float>-2.25960931E-10</float>
-    <float>-2.55159034E-06</float>
-    <float>-0.000440162315</float>
-    <float>0.0009497623</float>
-    <float>0.003270834</float>
+    <float>-3.211776E-42</float>
+    <float>-7.055408E-31</float>
+    <float>-1.39085805E-21</float>
+    <float>-4.9895665E-14</float>
+    <float>-3.23487832E-08</float>
+    <float>-0.000371120026</float>
+    <float>-0.0681355745</float>
+    <float>0.0244198479</float>
+    <float>0.3744517</float>
     <float>0</float>
     <float>0</float>
-    <float>-1.81476841E-36</float>
-    <float>-3.56900279E-27</float>
-    <float>-1.27549855E-19</float>
-    <float>-8.212673E-14</float>
-    <float>-9.273908E-10</float>
-    <float>-1.60006422E-07</float>
-    <float>3.34211279E-07</float>
-    <float>1.09591952E-06</float>
+    <float>-1.4000774E-32</float>
+    <float>-2.76001542E-23</float>
+    <float>-9.9013E-16</float>
+    <float>-6.419279E-10</float>
+    <float>-7.364497E-06</float>
+    <float>-0.0013522876</float>
+    <float>0.000383502163</float>
+    <float>0.00630311</float>
     <float>0</float>
     <float>0</float>
-    <float>-8.116321E-42</float>
-    <float>-2.37585922E-32</float>
-    <float>-8.490887E-25</float>
-    <float>-5.4671E-19</float>
-    <float>-6.17357E-15</float>
-    <float>-1.065276E-12</float>
-    <float>2.17650442E-12</float>
-    <float>6.93604072E-12</float>
+    <float>-5.088666E-36</float>
+    <float>-1.00314241E-26</float>
+    <float>-3.59867045E-19</float>
+    <float>-2.3331242E-13</float>
+    <float>-2.676671E-09</float>
+    <float>-4.915443E-07</float>
+    <float>1.20027963E-07</float>
+    <float>2.12841451E-06</float>
+    <float>0</float>
+    <float>0</float>
+    <float>-2.36385E-41</float>
+    <float>-6.677851E-32</float>
+    <float>-2.3956055E-24</float>
+    <float>-1.55313686E-18</float>
+    <float>-1.78183477E-14</float>
+    <float>-3.272395E-12</float>
+    <float>7.13233455E-13</float>
+    <float>1.35348772E-11</float>
     <float>0</float>
     <float>0</float>
     <float>0</float>
-    <float>-2.878235E-39</float>
-    <float>-1.03524894E-31</float>
-    <float>-6.665779E-26</float>
-    <float>-7.52711335E-22</float>
-    <float>-1.298957E-19</float>
-    <float>2.61060631E-19</float>
-    <float>8.160811E-19</float>
+    <float>-8.123736E-39</float>
+    <float>-2.92083263E-31</float>
+    <float>-1.89366837E-25</float>
+    <float>-2.17250244E-21</float>
+    <float>-3.990077E-19</float>
+    <float>7.92741E-20</float>
+    <float>1.59771083E-18</float>
   </m_Mean>
-  <m_StandDev>2.1102922</m_StandDev>
+  <m_StandDev>6.03777742</m_StandDev>
   <m_GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>

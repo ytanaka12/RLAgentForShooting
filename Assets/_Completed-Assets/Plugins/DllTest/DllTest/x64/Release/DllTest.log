@@ -1,0 +1,23 @@
+﻿2016/11/27 21:26:00 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\yasufumi\Documents\Visual Studio 2015\Projects\DllTest\DllTest\DllTest.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D NDEBUG /D _WINDOWS /D _USRDLL /D DLLTEST_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Yc"stdafx.h" /Fp"x64\Release\DllTest.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D NDEBUG /D _WINDOWS /D _USRDLL /D DLLTEST_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt dllmain.cpp
+         dllmain.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D NDEBUG /D _WINDOWS /D _USRDLL /D DLLTEST_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Yu"stdafx.h" /Fp"x64\Release\DllTest.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt DllTest.cpp
+         DllTest.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\yasufumi\Documents\Visual Studio 2015\Projects\DllTest\x64\Release\DllTest.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\yasufumi\Documents\Visual Studio 2015\Projects\DllTest\x64\Release\DllTest.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\yasufumi\Documents\Visual Studio 2015\Projects\DllTest\x64\Release\DllTest.lib" /MACHINE:X64 /DLL x64\Release\dllmain.obj
+         x64\Release\DllTest.obj
+         x64\Release\stdafx.obj
+            ライブラリ C:\Users\yasufumi\Documents\Visual Studio 2015\Projects\DllTest\x64\Release\DllTest.lib とオブジェクト C:\Users\yasufumi\Documents\Visual Studio 2015\Projects\DllTest\x64\Release\DllTest.exp を作成中
+         コード生成しています。
+         All 11 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+         コード生成が終了しました。
+         DllTest.vcxproj -> C:\Users\yasufumi\Documents\Visual Studio 2015\Projects\DllTest\x64\Release\DllTest.dll
+     1>プロジェクト "C:\Users\yasufumi\Documents\Visual Studio 2015\Projects\DllTest\DllTest\DllTest.vcxproj" (Build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:03.42

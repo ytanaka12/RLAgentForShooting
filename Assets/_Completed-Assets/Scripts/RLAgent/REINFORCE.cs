@@ -12,6 +12,7 @@ namespace RLProcess
 		/* Must need to scecify these parameter */
 		//private const int m_NumKernel = 3;
 		private const int m_StateDim = 2;
+		private float m_eps = 0.1f;
 
 		public class OneFrameData : ICloneable
 		{
@@ -122,7 +123,6 @@ namespace RLProcess
 		/* Optimization by Gradient Ascent */
 		/*---------------------------------*/
 		public void GradientAscent() {
-			float eps = 0.1f;
 			float[] gAscentMean = new float[m_GaussianPolicyModel.m_Mean.Length];
 			//initialize
 			for (int i = 0; i < gAscentMean.Length; i++) {
@@ -154,9 +154,9 @@ namespace RLProcess
 			//Ascent
 			for (int i = 0; i < gAscentMean.Length; i++)
 			{
-				m_GaussianPolicyModel.m_Mean[i] += eps * gAscentMean[i];
+				m_GaussianPolicyModel.m_Mean[i] += m_eps * gAscentMean[i];
 			}
-			m_GaussianPolicyModel.m_StandDev += eps * gAscentStandDev;
+			m_GaussianPolicyModel.m_StandDev += m_eps * gAscentStandDev;
 
 			/* limit */
 			if (m_GaussianPolicyModel.m_StandDev < 1.0f) {
@@ -166,6 +166,67 @@ namespace RLProcess
 
 			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][10].State.Clone());
             float buf = m_GaussianPolicyModel.CalcActionMean();
+			//Debug.LogFormat("ActionMean: {0}", buf);
+
+			//terminate judge
+			//if (gAscentMean[0] < 0.1f)
+			//{
+			//	return;
+			//}
+		}
+
+		/*-----------------------------------------*/
+		/* Optimization by Natural Gradient Ascent */
+		/*-----------------------------------------*/
+		public void NaturalGradientAscent()
+		{
+			float[] gAscentMean = new float[m_GaussianPolicyModel.m_Mean.Length];
+			//initialize
+			for (int i = 0; i < gAscentMean.Length; i++)
+			{
+				gAscentMean[i] = 0.0f;
+			}
+			float gAscentStandDev = 0.0f;
+
+			float[] befMean = new float[m_GaussianPolicyModel.m_Mean.Length];
+			befMean = (float[])m_GaussianPolicyModel.m_Mean.Clone();
+			float befStandDev = new float();
+			befStandDev = m_GaussianPolicyModel.m_StandDev;
+
+			for (int n = 0; n < m_Trajectories.Count; n++)
+			{
+				for (int t = 0; t < m_Trajectories[n].Count; t++)
+				{
+					//set state
+					m_GaussianPolicyModel.SetState((float[])m_Trajectories[n][t].State.Clone());
+
+					//set action
+					m_GaussianPolicyModel.SetAction(m_Trajectories[n][t].Action);
+					//m_GaussianPolicyModel.SetAction(1.6f);
+
+					//calculate Gradient
+					float[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
+					gAscentMean = AddVectorB2VectorA(ref gAscentMean, ref bufMean);
+					gAscentStandDev += m_GaussianPolicyModel.CalcgradientStandDev();
+				}
+			}
+
+			//Ascent
+			for (int i = 0; i < gAscentMean.Length; i++)
+			{
+				m_GaussianPolicyModel.m_Mean[i] += m_eps * gAscentMean[i];
+			}
+			m_GaussianPolicyModel.m_StandDev += m_eps * gAscentStandDev;
+
+			/* limit */
+			if (m_GaussianPolicyModel.m_StandDev < 1.0f)
+			{
+				m_GaussianPolicyModel.m_Mean = (float[])befMean.Clone();
+				m_GaussianPolicyModel.m_StandDev = befStandDev;
+			}
+
+			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][10].State.Clone());
+			float buf = m_GaussianPolicyModel.CalcActionMean();
 			//Debug.LogFormat("ActionMean: {0}", buf);
 
 			//terminate judge
