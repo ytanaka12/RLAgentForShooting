@@ -36,6 +36,12 @@ namespace RLProcess
 
 		void Start() {
 			//m_GaussianPolicyModel.InputParametersFromXML(fNameGPM_XML);
+			//EigenFunc eigen = new EigenFunc();
+			//float[,] bufMat = new float[3,3]{ { 1f, 2f, 1f },{ 2f, 1f, 0f },{ 1f, 1f, 2f } };
+			//float[,] AnsMat = new float[3, 3];
+			//Debug.LogFormat("bufMat: {0}", bufMat[0,0]);
+			//eigen.InverseMatrix(bufMat, ref AnsMat);
+			//Debug.LogFormat("AnsMat: {0}", AnsMat[0,0]);
 		}
 
 		/*--------------------*/
@@ -119,6 +125,22 @@ namespace RLProcess
 			return (float[])ans.Clone();
 		}
 
+		/*-------------------*/
+		/* vector * vector T */
+		/*-------------------*/
+		float[,] VecVecT(float[] A, float[] BT) {
+			float[,] mat = new float[A.Length, BT.Length];
+
+			for (int c = 0; c < A.Length; c++)
+			{
+				for (int r = 0; r < BT.Length; r++)
+				{
+					mat[c, r] = A[c] * BT[r];
+				}
+			}
+			return (float[,])mat.Clone();
+		}
+
 		/*---------------------------------*/
 		/* Optimization by Gradient Ascent */
 		/*---------------------------------*/
@@ -180,21 +202,28 @@ namespace RLProcess
 		/*-----------------------------------------*/
 		public void NaturalGradientAscent()
 		{
-			float[] gAscentMean = new float[m_GaussianPolicyModel.m_Mean.Length];
 			//initialize
+			float[] gAscentMean = new float[m_GaussianPolicyModel.m_Mean.Length];
 			for (int i = 0; i < gAscentMean.Length; i++)
 			{
 				gAscentMean[i] = 0.0f;
 			}
 			float gAscentStandDev = 0.0f;
 
+			//temporary memory
 			float[] befMean = new float[m_GaussianPolicyModel.m_Mean.Length];
 			befMean = (float[])m_GaussianPolicyModel.m_Mean.Clone();
 			float befStandDev = new float();
 			befStandDev = m_GaussianPolicyModel.m_StandDev;
 
+			//vector for calculation of Fisher information matrix
+			float[] vFisherParam = new float[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
+			float[,] FisherMat = new float[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
+
+			//calc
 			for (int n = 0; n < m_Trajectories.Count; n++)
 			{
+				//calc gradient like previous
 				for (int t = 0; t < m_Trajectories[n].Count; t++)
 				{
 					//set state
@@ -209,7 +238,15 @@ namespace RLProcess
 					gAscentMean = AddVectorB2VectorA(ref gAscentMean, ref bufMean);
 					gAscentStandDev += m_GaussianPolicyModel.CalcgradientStandDev();
 				}
-			}
+
+				//calc Fisher Information Matrix
+				for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++) {
+					vFisherParam[i] = gAscentMean[i];
+				}
+				vFisherParam[m_GaussianPolicyModel.m_Mean.Length] = gAscentStandDev;
+				float[,] bufMat = new float[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
+				bufMat = VecVecT(vFisherParam, vFisherParam);
+            }
 
 			//Ascent
 			for (int i = 0; i < gAscentMean.Length; i++)

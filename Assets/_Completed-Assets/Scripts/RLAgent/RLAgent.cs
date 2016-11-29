@@ -75,6 +75,14 @@ namespace RLProcess
 			}
 			ClickOnGPM_Load();
 			//LoadEpisode(fNameLoadEpisode);
+
+			/* EigenFunc.dll Sample */
+			EigenFunc eigen = new EigenFunc();
+			float[,] bufMat = new float[3, 3] { { 1f, 2f, 1f }, { 2f, 1f, 0f }, { 1f, 1f, 2f } };
+			float[,] AnsMat = new float[3, 3];
+			Debug.LogFormat("bufMat: {0}", bufMat[0,0]);
+			eigen.InverseMatrix(bufMat, ref AnsMat);
+			Debug.LogFormat("AnsMat: {0}", AnsMat[2, 2]);
 		}
 
 		/*-------------------------*/
