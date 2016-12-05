@@ -102,7 +102,7 @@
     <float>0</float>
     <float>0</float>
   </m_Mean>
-  <m_StandDev>4.39987469</m_StandDev>
+  <m_StandDev>100</m_StandDev>
   <m_GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>

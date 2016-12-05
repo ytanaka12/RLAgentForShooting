@@ -101,7 +101,8 @@ namespace RLProcess
 		/* Run REINFORCE */
 		/*---------------*/
 		public void RunREINFORCE() {
-			GradientAscent();
+			//GradientAscent();
+			NaturalGradientAscent();
 		}
 
 		/*------------*/
@@ -139,6 +140,54 @@ namespace RLProcess
 				}
 			}
 			return (float[,])mat.Clone();
+		}
+
+		/*-------------------*/
+		/* Add Matrix Matrix */
+		/*-------------------*/
+		float[,] AddMatrixMatrix(float[,] A, float[,] B) {
+			int dim = (int)Mathf.Sqrt(A.Length);
+			float[,] mat = new float[dim, dim];
+
+			for (int i = 0; i < dim; i++) {
+				for (int j = 0; j < dim; j++) {
+					mat[i, j] = A[i, j] + B[i, j];
+				}
+			}
+
+			return (float[,])mat.Clone();
+		}
+
+		/*-------------------------------*/
+		/* Multiple Coefficient * Matrix */
+		/*-------------------------------*/
+		float[,] MultipleMatrix(float Coef, float[,] A)
+		{
+			int dim = (int)Mathf.Sqrt(A.Length);
+			float[,] mat = new float[dim, dim];
+
+			for (int i = 0; i < dim; i++)
+			{
+				for (int j = 0; j < dim; j++)
+				{
+					mat[i, j] = Coef * A[i, j];
+				}
+			}
+
+			return (float[,])mat.Clone();
+		}
+
+		float[] MultipleMatrixVector(float[,] mat, float[] vec) {
+			int dim = vec.Length;
+			float[] ans = new float[dim];
+
+			for (int i = 0; i < dim; i++) {
+				for (int j = 0; j < dim; j++) {
+					ans[i] += mat[i, j] * vec[j];
+				}
+			}
+
+			return (float[])ans.Clone();
 		}
 
 		/*---------------------------------*/
@@ -223,6 +272,8 @@ namespace RLProcess
 			//calc
 			for (int n = 0; n < m_Trajectories.Count; n++)
 			{
+				float[] bufFisherMean = new float[m_GaussianPolicyModel.m_Mean.Length];
+				float bufFisherStandDev = 0.0f;
 				//calc gradient like previous
 				for (int t = 0; t < m_Trajectories[n].Count; t++)
 				{
@@ -236,17 +287,57 @@ namespace RLProcess
 					//calculate Gradient
 					float[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
 					gAscentMean = AddVectorB2VectorA(ref gAscentMean, ref bufMean);
-					gAscentStandDev += m_GaussianPolicyModel.CalcgradientStandDev();
-				}
+					bufFisherMean = AddVectorB2VectorA(ref bufFisherMean, ref bufMean);
+					float bufStandDev = m_GaussianPolicyModel.CalcgradientStandDev();
+					gAscentStandDev += bufStandDev;
+					bufFisherStandDev += bufStandDev;
+
+					//for calc Fisher Information Matrix
+					//bufFisherMean = (float[])bufMean.Clone();
+					//bufFisherStandDev = bufStandDev;
+                }
 
 				//calc Fisher Information Matrix
 				for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++) {
-					vFisherParam[i] = gAscentMean[i];
+					vFisherParam[i] = bufFisherMean[i];
 				}
-				vFisherParam[m_GaussianPolicyModel.m_Mean.Length] = gAscentStandDev;
+				vFisherParam[m_GaussianPolicyModel.m_Mean.Length] = bufFisherStandDev;
 				float[,] bufMat = new float[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
 				bufMat = VecVecT(vFisherParam, vFisherParam);
+				FisherMat = AddMatrixMatrix(FisherMat, bufMat);
             }
+
+			// Fisher Information Matrix !!
+			FisherMat = MultipleMatrix(1.0f / (float)m_Trajectories.Count, FisherMat);
+			//for (int i = 0; i < 100; i++)
+			//{
+			//	Debug.LogFormat("fisher mat[{0}]: {1}", i, FisherMat[i, i]);
+			//}
+
+			//Inverse Fisher Information Matrix
+			EigenFunc eigen = new EigenFunc();
+			float[,] InvFisherMat = eigen.InverseMatrix(FisherMat);
+
+			for (int i = 0; i < 100; i++)
+			{
+				Debug.LogFormat("inv fisher mat[{0}]: {1}", i, InvFisherMat[i, i]);
+			}
+
+			//Calc Natural Gradient
+			float[] provGradientVec = new float[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
+			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
+			{
+				provGradientVec[i] = gAscentMean[i];
+			}
+			provGradientVec[m_GaussianPolicyModel.m_Mean.Length] = gAscentStandDev;
+			float[] NaturalGradientVec = new float[m_GaussianPolicyModel.m_Mean.Length + 1];    //NaturalGradient
+			NaturalGradientVec = MultipleMatrixVector(InvFisherMat, provGradientVec);
+
+			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
+			{
+				gAscentMean[i] = NaturalGradientVec[i];
+			}
+			gAscentStandDev = NaturalGradientVec[m_GaussianPolicyModel.m_Mean.Length];
 
 			//Ascent
 			for (int i = 0; i < gAscentMean.Length; i++)

@@ -1,808 +1,808 @@
 <?xml version="1.0" encoding="shift_jis"?>
 <GaussianPolicyModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <m_Mean>
-    <float>0</float>
-    <float>0</float>
-    <float>0</float>
-    <float>-3.941539E-39</float>
-    <float>-1.41988139E-31</float>
-    <float>-9.201039E-26</float>
-    <float>-7.907014E-22</float>
-    <float>3.335997E-17</float>
-    <float>9.83312349E-14</float>
-    <float>2.65078981E-09</float>
-    <float>0</float>
-    <float>0</float>
-    <float>-1.210021E-41</float>
-    <float>-3.810564E-32</float>
-    <float>-1.36699675E-24</float>
-    <float>-8.862526E-19</float>
-    <float>-1.0107324E-14</float>
-    <float>4.90905537E-12</float>
-    <float>1.74769461E-08</float>
-    <float>1.29050727E-06</float>
-    <float>0</float>
-    <float>0</float>
-    <float>-3.40855982E-36</float>
-    <float>-6.71937E-27</float>
-    <float>-2.41051029E-19</float>
-    <float>-1.56279828E-13</float>
-    <float>-1.79258852E-09</float>
-    <float>-2.99593552E-07</float>
-    <float>6.410287E-05</float>
-    <float>0.00405606767</float>
-    <float>0</float>
-    <float>0</float>
-    <float>-1.10085604E-32</float>
-    <float>-2.17015667E-23</float>
-    <float>-7.78520528E-16</float>
-    <float>-5.04737863E-10</float>
-    <float>-5.79051539E-06</float>
-    <float>-0.001059333</float>
-    <float>0.00599242467</float>
-    <float>0.2672785</float>
-    <float>0</float>
-    <float>-2.792788E-42</float>
-    <float>-6.512028E-31</float>
-    <float>-1.28373887E-21</float>
-    <float>-4.60528154E-14</float>
-    <float>-2.985723E-08</float>
-    <float>-0.000342536281</float>
-    <float>-0.06286432</float>
-    <float>0.04128684</float>
-    <float>0.795469642</float>
-    <float>0</float>
-    <float>-3.211776E-42</float>
-    <float>-7.055408E-31</float>
-    <float>-1.39085805E-21</float>
-    <float>-4.9895665E-14</float>
-    <float>-3.23487832E-08</float>
-    <float>-0.000371120026</float>
-    <float>-0.0681355745</float>
-    <float>0.0244198479</float>
-    <float>0.3744517</float>
-    <float>0</float>
-    <float>0</float>
-    <float>-1.4000774E-32</float>
-    <float>-2.76001542E-23</float>
-    <float>-9.9013E-16</float>
-    <float>-6.419279E-10</float>
-    <float>-7.364497E-06</float>
-    <float>-0.0013522876</float>
-    <float>0.000383502163</float>
-    <float>0.00630311</float>
-    <float>0</float>
-    <float>0</float>
-    <float>-5.088666E-36</float>
-    <float>-1.00314241E-26</float>
-    <float>-3.59867045E-19</float>
-    <float>-2.3331242E-13</float>
-    <float>-2.676671E-09</float>
-    <float>-4.915443E-07</float>
-    <float>1.20027963E-07</float>
-    <float>2.12841451E-06</float>
-    <float>0</float>
-    <float>0</float>
-    <float>-2.36385E-41</float>
-    <float>-6.677851E-32</float>
-    <float>-2.3956055E-24</float>
-    <float>-1.55313686E-18</float>
-    <float>-1.78183477E-14</float>
-    <float>-3.272395E-12</float>
-    <float>7.13233455E-13</float>
-    <float>1.35348772E-11</float>
-    <float>0</float>
-    <float>0</float>
-    <float>0</float>
-    <float>-8.123736E-39</float>
-    <float>-2.92083263E-31</float>
-    <float>-1.89366837E-25</float>
-    <float>-2.17250244E-21</float>
-    <float>-3.990077E-19</float>
-    <float>7.92741E-20</float>
-    <float>1.59771083E-18</float>
+    <float>6.227009E+10</float>
+    <float>-3.946772E+11</float>
+    <float>-9.121043E+09</float>
+    <float>8.122802E+08</float>
+    <float>-230527568</float>
+    <float>-4586836.5</float>
+    <float>-25255922</float>
+    <float>-1597533.88</float>
+    <float>2312425.25</float>
+    <float>1250945</float>
+    <float>-1.83279039E+12</float>
+    <float>7.229636E+10</float>
+    <float>-6.62020557E+09</float>
+    <float>-3.156124E+08</float>
+    <float>-11743561</float>
+    <float>814533</float>
+    <float>-2374174.75</float>
+    <float>999580.1</float>
+    <float>415276.438</float>
+    <float>122296.7</float>
+    <float>7.58075E+11</float>
+    <float>-98857656</float>
+    <float>2.208974E+09</float>
+    <float>101923320</float>
+    <float>26213156</float>
+    <float>-747699.2</float>
+    <float>-1909625.75</float>
+    <float>429649.656</float>
+    <float>-230456</float>
+    <float>-5319.351</float>
+    <float>8.381809E+10</float>
+    <float>-5.54742835E+09</float>
+    <float>191131456</float>
+    <float>-43490252</float>
+    <float>-15157374</float>
+    <float>1217334.75</float>
+    <float>-96254.46</float>
+    <float>-240291.984</float>
+    <float>23394.873</float>
+    <float>-27005.49</float>
+    <float>5.17801738E+10</float>
+    <float>663280256</float>
+    <float>108667144</float>
+    <float>36860376</float>
+    <float>6690155.5</float>
+    <float>123082.344</float>
+    <float>-288787.4</float>
+    <float>102428.75</float>
+    <float>85540.48</float>
+    <float>-71224.68</float>
+    <float>-2.52618383E+10</float>
+    <float>-5.544684E+09</float>
+    <float>3.878751E+08</float>
+    <float>24025212</float>
+    <float>-521095.125</float>
+    <float>-2840693.75</float>
+    <float>187014.438</float>
+    <float>64252.0664</float>
+    <float>-12111.5244</float>
+    <float>-35079.4</float>
+    <float>9.890709E+10</float>
+    <float>-782984064</float>
+    <float>923624640</float>
+    <float>32108486</float>
+    <float>-4191116.75</float>
+    <float>1403101.75</float>
+    <float>-236984.656</float>
+    <float>-108920.078</float>
+    <float>-130858.852</float>
+    <float>-7439.735</float>
+    <float>2.9677106E+11</float>
+    <float>-4.83288E+09</float>
+    <float>-3.056495E+08</float>
+    <float>-168175856</float>
+    <float>9178954</float>
+    <float>1561700.63</float>
+    <float>-1281709</float>
+    <float>372719.9</float>
+    <float>107436.305</float>
+    <float>-252681.75</float>
+    <float>1.26547342E+12</float>
+    <float>-6.3498625E+10</float>
+    <float>3.46216115E+09</float>
+    <float>-377366624</float>
+    <float>12567747</float>
+    <float>3197482</float>
+    <float>1977053.63</float>
+    <float>-221697.859</float>
+    <float>-910515.5</float>
+    <float>246811.453</float>
+    <float>4.985354E+12</float>
+    <float>3.00747227E+11</float>
+    <float>1.25161974E+10</float>
+    <float>1.74107174E+09</float>
+    <float>-261632912</float>
+    <float>-64274516</float>
+    <float>-2.107373E+07</float>
+    <float>2064402.13</float>
+    <float>2950136.25</float>
+    <float>965966.6</float>
   </m_Mean>
-  <m_StandDev>6.03777742</m_StandDev>
+  <m_StandDev>503.75824</m_StandDev>
   <m_GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-20</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-16</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-12</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-8</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>-4</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>0</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>4</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>8</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>12</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>-20</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>-16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>-12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>-8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>-4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>0</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>4</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>8</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>12</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
     <GaussianKernel>
       <m_KernelCenter>
         <float>16</float>
         <float>16</float>
       </m_KernelCenter>
-      <m_Sigma>4</m_Sigma>
+      <m_Sigma>40</m_Sigma>
     </GaussianKernel>
   </m_GaussianKernel>
 </GaussianPolicyModel>

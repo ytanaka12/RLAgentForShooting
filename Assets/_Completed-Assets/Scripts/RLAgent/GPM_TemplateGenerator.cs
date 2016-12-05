@@ -32,7 +32,7 @@ namespace RLProcess
 					GPM.m_GaussianKernel[iKernel].m_KernelCenter[0] = x;
 					GPM.m_GaussianKernel[iKernel].m_KernelCenter[1] = y;
 					//GPM.m_GaussianKernel[iKernel].m_KernelCenter[2] = 0.0f;
-					GPM.m_GaussianKernel[iKernel].m_Sigma = 4f;
+					GPM.m_GaussianKernel[iKernel].m_Sigma = 40f;
 					iKernel++;
 				}
 			}

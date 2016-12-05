@@ -18,6 +18,9 @@ public class EigenFunc /*: MonoBehaviour*/
 	[DllImport("EigenFuncs")]
 	private static extern void InverseMat(int dim, float[] a, float[] ans);
 
+	[DllImport("EigenFuncs")]
+	private static extern void InverseMat_FullPivLU(int dim, float[] a, float[] ans);
+
 	private void Matrix2Array(float[,] Mat, ref float[] Arr)
 	{
 		int count = 0;
@@ -46,14 +49,18 @@ public class EigenFunc /*: MonoBehaviour*/
 		}
 	}
 
-	public void InverseMatrix(float[,] Mat, ref float[,] AnsMat) {
+	public float[,] InverseMatrix(float[,] Mat) {
 		float[] arr = new float[Mat.Length];
 		int dim = (int)Mathf.Sqrt(Mat.Length);
+		float[,] AnsMat = new float[dim, dim];
 
 		Matrix2Array(Mat, ref arr);
 		float[] ansArr = new float[Mat.Length];
-		InverseMat(dim, arr, ansArr);
+		//InverseMat(dim, arr, ansArr);
+		InverseMat_FullPivLU(dim, arr, ansArr);
 		Array2Matrix(ansArr, AnsMat);
+
+		return (float[,])AnsMat.Clone();
 	}
 
 	void sampleSource() {
@@ -62,7 +69,7 @@ public class EigenFunc /*: MonoBehaviour*/
 		float[,] bufMat = new float[3, 3] { { 1f, 2f, 1f }, { 2f, 1f, 0f }, { 1f, 1f, 2f } };
 		float[,] AnsMat = new float[3, 3];
 		Debug.LogFormat("bufMat: {0}", bufMat[0, 0]);
-		eigen.InverseMatrix(bufMat, ref AnsMat);
+		AnsMat = eigen.InverseMatrix(bufMat);
 		Debug.LogFormat("AnsMat: {0}", AnsMat[2, 2]);
 	}
 

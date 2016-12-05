@@ -77,12 +77,12 @@ namespace RLProcess
 			//LoadEpisode(fNameLoadEpisode);
 
 			/* EigenFunc.dll Sample */
-			EigenFunc eigen = new EigenFunc();
-			float[,] bufMat = new float[3, 3] { { 1f, 2f, 1f }, { 2f, 1f, 0f }, { 1f, 1f, 2f } };
-			float[,] AnsMat = new float[3, 3];
-			Debug.LogFormat("bufMat: {0}", bufMat[0,0]);
-			eigen.InverseMatrix(bufMat, ref AnsMat);
-			Debug.LogFormat("AnsMat: {0}", AnsMat[2, 2]);
+			//EigenFunc eigen = new EigenFunc();
+			//float[,] bufMat = new float[3, 3] { { 1f, 2f, 1f }, { 2f, 1f, 0f }, { 1f, 1f, 2f } };
+			//float[,] AnsMat = new float[3, 3];
+			//Debug.LogFormat("bufMat: {0}", bufMat[0,0]);
+			//AnsMat = eigen.InverseMatrix(bufMat);
+			//Debug.LogFormat("AnsMat: {0}", AnsMat[2, 2]);
 		}
 
 		/*-------------------------*/
@@ -160,9 +160,6 @@ namespace RLProcess
 		/*---------------------------------------*/
 		public void ClickOnGPM_Load() {
 			//PGLearn.m_GaussianPolicyModel.InputParametersFromXML("/GPMData.xml");
-			//m_REINFORCE_Move.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Move.xml");
-			//m_REINFORCE_Turn.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Turn.xml");
-			//m_REINFORCE_Fired.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_Param_Fired.xml");
 			m_REINFORCE_Move.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_k100_40x40_Move.xml");
 			m_REINFORCE_Turn.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_k100_40x40_Turn.xml");
 			m_REINFORCE_Fired.m_GaussianPolicyModel.InputParametersFromXML("/GPMs/GPM_k100_40x40_Fired.xml");
@@ -172,19 +169,16 @@ namespace RLProcess
 		/* ClickOn Policy Update */
 		/*-----------------------*/
 		public void ClickOnGPM_Update() {
-			for (int i = 0; i < 1000; i++)
+			for (int i = 0; i < 1; i++)
 			{
 				m_REINFORCE_Move.RunREINFORCE();
-				m_REINFORCE_Turn.RunREINFORCE();
-				m_REINFORCE_Fired.RunREINFORCE();
+				//m_REINFORCE_Turn.RunREINFORCE();
+				//m_REINFORCE_Fired.RunREINFORCE();
 			}
 			Debug.LogFormat("num of kernels: {0}", m_REINFORCE_Move.m_GaussianPolicyModel.m_Mean.Length);
-			//m_REINFORCE_Move.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Move.xml");
-			//m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Turn.xml");
-			//m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_Param_Fired.xml");
 			m_REINFORCE_Move.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Move.xml");
-			m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Turn.xml");
-			m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Fired.xml");
+			//m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Turn.xml");
+			//m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Fired.xml");
 		}
 
 		/*----------------------------------------------------------*/
