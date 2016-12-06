@@ -19,7 +19,7 @@ namespace RLProcess
 			{
 				GPM.m_Mean[i] = 0.0f;
 			}
-			GPM.m_StandDev = 100f;
+			GPM.m_StandDev = 500f;
 
 			//Set Kernels Parameters
 			int iKernel = 0;
@@ -32,7 +32,7 @@ namespace RLProcess
 					GPM.m_GaussianKernel[iKernel].m_KernelCenter[0] = x;
 					GPM.m_GaussianKernel[iKernel].m_KernelCenter[1] = y;
 					//GPM.m_GaussianKernel[iKernel].m_KernelCenter[2] = 0.0f;
-					GPM.m_GaussianKernel[iKernel].m_Sigma = 40f;
+					GPM.m_GaussianKernel[iKernel].m_Sigma = 4f;
 					iKernel++;
 				}
 			}

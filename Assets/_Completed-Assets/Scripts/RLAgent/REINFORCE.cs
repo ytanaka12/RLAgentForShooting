@@ -12,7 +12,7 @@ namespace RLProcess
 		/* Must need to scecify these parameter */
 		//private const int m_NumKernel = 3;
 		private const int m_StateDim = 2;
-		private float m_eps = 0.1f;
+		private float m_eps = 1.0E-10f;
 
 		public class OneFrameData : ICloneable
 		{
@@ -309,22 +309,73 @@ namespace RLProcess
 
 			// Fisher Information Matrix !!
 			FisherMat = MultipleMatrix(1.0f / (float)m_Trajectories.Count, FisherMat);
-			//for (int i = 0; i < 100; i++)
+			//for (int i = 0; i < 101; i++)
 			//{
+			//	//Debug.LogFormat("VecF[{0}]: {1}", i, vFisherParam[i]);
 			//	Debug.LogFormat("fisher mat[{0}]: {1}", i, FisherMat[i, i]);
 			//}
+
+			float zeroSl = 1.0E-30f;
+			//count zero element
+			int count = 0;
+			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length + 1; i++)
+			{
+				if (zeroSl < FisherMat[i, i]) {
+					count++;
+				}
+			}
+			Debug.LogFormat("number of zero element: {0}", count);
+
+			//
+			float[,] FisherMatNotZero = new float[count, count];
+			int[] IDofNotZero = new int[count];
+			count = 0;
+			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length + 1; i++)
+			{
+				if (zeroSl < FisherMat[i, i]) {
+					IDofNotZero[count] = i;
+					count++;
+				}
+			}
+
+			for (int i = 0; i < IDofNotZero.LongLength; i++)
+			{
+				for (int j = 0; j < IDofNotZero.LongLength; j++) {
+					FisherMatNotZero[i, j] = FisherMat[IDofNotZero[i], IDofNotZero[j]];
+				}
+            }
 
 			//Inverse Fisher Information Matrix
 			EigenFunc eigen = new EigenFunc();
 			float[,] InvFisherMat = eigen.InverseMatrix(FisherMat);
+			float[,] InvFisherMatNotZero = eigen.InverseMatrix(FisherMatNotZero);
 
-			for (int i = 0; i < 100; i++)
-			{
-				Debug.LogFormat("inv fisher mat[{0}]: {1}", i, InvFisherMat[i, i]);
+			//for (int i = 0; i < 100; i++)
+			//{
+			//	Debug.LogFormat("inv fisher mat[{0}]: {1}", i, InvFisherMat[i, i]);
+			//}
+
+			for (int i = 0; i < IDofNotZero.Length; i++) {
+				Debug.LogFormat("inv fisher mat not zero[{0}]: {1}", i, InvFisherMatNotZero[i, i]);
 			}
 
-			//Calc Natural Gradient
-			float[] provGradientVec = new float[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
+			//convert
+			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length + 1; i++) {
+				for (int j = 0; j < m_GaussianPolicyModel.m_Mean.Length + 1; j++)
+				{
+					InvFisherMat[i, j] = 0.0f;
+				}
+			}
+			for (int i = 0; i < IDofNotZero.LongLength; i++)
+			{
+				for (int j = 0; j < IDofNotZero.LongLength; j++)
+				{
+					InvFisherMat[IDofNotZero[i], IDofNotZero[j]] = InvFisherMatNotZero[i, j];
+				}
+			}
+
+					//Calc Natural Gradient
+					float[] provGradientVec = new float[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
 			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
 			{
 				provGradientVec[i] = gAscentMean[i];
