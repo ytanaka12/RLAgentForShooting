@@ -12,13 +12,14 @@ namespace RLProcess
 		/* Must need to scecify these parameter */
 		//private const int m_NumKernel = 3;
 		private const int m_StateDim = 2;
-		private float m_eps = 1.0E-10f;
+		private double m_eps = Math.Pow(10.0d, -50.0d);
+		//private double m_eps = 0.00001f;
 
 		public class OneFrameData : ICloneable
 		{
-			public float[] State = new float[m_StateDim];
-			public float Action;
-			public float Reward;
+			public double[] State = new double[m_StateDim];
+			public double Action;
+			public double Reward;
 			public object Clone()
 			{
 				return MemberwiseClone();
@@ -31,17 +32,11 @@ namespace RLProcess
 		private List<TankInfo> m_LogHuTank = new List<TankInfo>();
 
 		public GaussianPolicyModel m_GaussianPolicyModel = new GaussianPolicyModel();
+		private ComputeMatrix compMat = new ComputeMatrix();
 
 		public string fNameGPM_XML = "/GPMData.xml";
 
 		void Start() {
-			//m_GaussianPolicyModel.InputParametersFromXML(fNameGPM_XML);
-			//EigenFunc eigen = new EigenFunc();
-			//float[,] bufMat = new float[3,3]{ { 1f, 2f, 1f },{ 2f, 1f, 0f },{ 1f, 1f, 2f } };
-			//float[,] AnsMat = new float[3, 3];
-			//Debug.LogFormat("bufMat: {0}", bufMat[0,0]);
-			//eigen.InverseMatrix(bufMat, ref AnsMat);
-			//Debug.LogFormat("AnsMat: {0}", AnsMat[0,0]);
 		}
 
 		/*--------------------*/
@@ -105,119 +100,34 @@ namespace RLProcess
 			NaturalGradientAscent();
 		}
 
-		/*------------*/
-		/* add vector */
-		/*------------*/
-		float[] AddVectorB2VectorA(ref float[] A, ref float[] B)
-		{
-			float[] ans = new float[A.Length];
-
-			//Debug.LogFormat("length: {0} / {1} / {2}", A.Length, B.Length, ans.Length);
-
-			for (int i = 0; i < A.Length; i++)
-			{
-				ans[i] = 0.0f;
-			}
-
-			for (int i = 0; i < A.Length; i++)
-			{
-				ans[i] = A[i] + B[i];
-			}
-			return (float[])ans.Clone();
-		}
-
-		/*-------------------*/
-		/* vector * vector T */
-		/*-------------------*/
-		float[,] VecVecT(float[] A, float[] BT) {
-			float[,] mat = new float[A.Length, BT.Length];
-
-			for (int c = 0; c < A.Length; c++)
-			{
-				for (int r = 0; r < BT.Length; r++)
-				{
-					mat[c, r] = A[c] * BT[r];
-				}
-			}
-			return (float[,])mat.Clone();
-		}
-
-		/*-------------------*/
-		/* Add Matrix Matrix */
-		/*-------------------*/
-		float[,] AddMatrixMatrix(float[,] A, float[,] B) {
-			int dim = (int)Mathf.Sqrt(A.Length);
-			float[,] mat = new float[dim, dim];
-
-			for (int i = 0; i < dim; i++) {
-				for (int j = 0; j < dim; j++) {
-					mat[i, j] = A[i, j] + B[i, j];
-				}
-			}
-
-			return (float[,])mat.Clone();
-		}
-
-		/*-------------------------------*/
-		/* Multiple Coefficient * Matrix */
-		/*-------------------------------*/
-		float[,] MultipleMatrix(float Coef, float[,] A)
-		{
-			int dim = (int)Mathf.Sqrt(A.Length);
-			float[,] mat = new float[dim, dim];
-
-			for (int i = 0; i < dim; i++)
-			{
-				for (int j = 0; j < dim; j++)
-				{
-					mat[i, j] = Coef * A[i, j];
-				}
-			}
-
-			return (float[,])mat.Clone();
-		}
-
-		float[] MultipleMatrixVector(float[,] mat, float[] vec) {
-			int dim = vec.Length;
-			float[] ans = new float[dim];
-
-			for (int i = 0; i < dim; i++) {
-				for (int j = 0; j < dim; j++) {
-					ans[i] += mat[i, j] * vec[j];
-				}
-			}
-
-			return (float[])ans.Clone();
-		}
-
 		/*---------------------------------*/
 		/* Optimization by Gradient Ascent */
 		/*---------------------------------*/
 		public void GradientAscent() {
-			float[] gAscentMean = new float[m_GaussianPolicyModel.m_Mean.Length];
+			double[] gAscentMean = new double[m_GaussianPolicyModel.m_Mean.Length];
 			//initialize
 			for (int i = 0; i < gAscentMean.Length; i++) {
 				gAscentMean[i] = 0.0f;
 			}
-			float gAscentStandDev = 0.0f;
+			double gAscentStandDev = 0.0f;
 
-			float[] befMean = new float[m_GaussianPolicyModel.m_Mean.Length];
-			befMean = (float[])m_GaussianPolicyModel.m_Mean.Clone();
-			float befStandDev = new float();
+			double[] befMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+			befMean = (double[])m_GaussianPolicyModel.m_Mean.Clone();
+			double befStandDev = new double();
 			befStandDev = m_GaussianPolicyModel.m_StandDev;
 
 			for (int n = 0; n < m_Trajectories.Count ; n++) {
 				for (int t = 0; t < m_Trajectories[n].Count; t++) {
 					//set state
-					m_GaussianPolicyModel.SetState((float[])m_Trajectories[n][t].State.Clone());
+					m_GaussianPolicyModel.SetState((double[])m_Trajectories[n][t].State.Clone());
 
 					//set action
 					m_GaussianPolicyModel.SetAction(m_Trajectories[n][t].Action);
 					//m_GaussianPolicyModel.SetAction(1.6f);
 
 					//calculate Gradient
-					float[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
-                    gAscentMean = AddVectorB2VectorA( ref gAscentMean, ref bufMean );
+					double[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
+                    gAscentMean = compMat.AddVectorB2VectorA( ref gAscentMean, ref bufMean );
 					gAscentStandDev += m_GaussianPolicyModel.CalcgradientStandDev();
 				}
 			}
@@ -231,12 +141,12 @@ namespace RLProcess
 
 			/* limit */
 			if (m_GaussianPolicyModel.m_StandDev < 1.0f) {
-				m_GaussianPolicyModel.m_Mean = (float[])befMean.Clone();
+				m_GaussianPolicyModel.m_Mean = (double[])befMean.Clone();
 				m_GaussianPolicyModel.m_StandDev = befStandDev;
 			}
 
-			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][10].State.Clone());
-            float buf = m_GaussianPolicyModel.CalcActionMean();
+			m_GaussianPolicyModel.SetState((double[])m_Trajectories[0][10].State.Clone());
+            double buf = m_GaussianPolicyModel.CalcActionMean();
 			//Debug.LogFormat("ActionMean: {0}", buf);
 
 			//terminate judge
@@ -252,48 +162,48 @@ namespace RLProcess
 		public void NaturalGradientAscent()
 		{
 			//initialize
-			float[] gAscentMean = new float[m_GaussianPolicyModel.m_Mean.Length];
+			double[] gAscentMean = new double[m_GaussianPolicyModel.m_Mean.Length];
 			for (int i = 0; i < gAscentMean.Length; i++)
 			{
 				gAscentMean[i] = 0.0f;
 			}
-			float gAscentStandDev = 0.0f;
+			double gAscentStandDev = 0.0f;
 
 			//temporary memory
-			float[] befMean = new float[m_GaussianPolicyModel.m_Mean.Length];
-			befMean = (float[])m_GaussianPolicyModel.m_Mean.Clone();
-			float befStandDev = new float();
+			double[] befMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+			befMean = (double[])m_GaussianPolicyModel.m_Mean.Clone();
+			double befStandDev = new double();
 			befStandDev = m_GaussianPolicyModel.m_StandDev;
 
 			//vector for calculation of Fisher information matrix
-			float[] vFisherParam = new float[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
-			float[,] FisherMat = new float[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
+			double[] vFisherParam = new double[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
+			double[,] FisherMat = new double[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
 
 			//calc
 			for (int n = 0; n < m_Trajectories.Count; n++)
 			{
-				float[] bufFisherMean = new float[m_GaussianPolicyModel.m_Mean.Length];
-				float bufFisherStandDev = 0.0f;
+				double[] bufFisherMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+				double bufFisherStandDev = 0.0f;
 				//calc gradient like previous
 				for (int t = 0; t < m_Trajectories[n].Count; t++)
 				{
 					//set state
-					m_GaussianPolicyModel.SetState((float[])m_Trajectories[n][t].State.Clone());
+					m_GaussianPolicyModel.SetState((double[])m_Trajectories[n][t].State.Clone());
 
 					//set action
 					m_GaussianPolicyModel.SetAction(m_Trajectories[n][t].Action);
 					//m_GaussianPolicyModel.SetAction(1.6f);
 
 					//calculate Gradient
-					float[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
-					gAscentMean = AddVectorB2VectorA(ref gAscentMean, ref bufMean);
-					bufFisherMean = AddVectorB2VectorA(ref bufFisherMean, ref bufMean);
-					float bufStandDev = m_GaussianPolicyModel.CalcgradientStandDev();
+					double[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
+					gAscentMean = compMat.AddVectorB2VectorA(ref gAscentMean, ref bufMean);
+					bufFisherMean = compMat.AddVectorB2VectorA(ref bufFisherMean, ref bufMean);
+					double bufStandDev = m_GaussianPolicyModel.CalcgradientStandDev();
 					gAscentStandDev += bufStandDev;
 					bufFisherStandDev += bufStandDev;
 
 					//for calc Fisher Information Matrix
-					//bufFisherMean = (float[])bufMean.Clone();
+					//bufFisherMean = (double[])bufMean.Clone();
 					//bufFisherStandDev = bufStandDev;
                 }
 
@@ -302,93 +212,43 @@ namespace RLProcess
 					vFisherParam[i] = bufFisherMean[i];
 				}
 				vFisherParam[m_GaussianPolicyModel.m_Mean.Length] = bufFisherStandDev;
-				float[,] bufMat = new float[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
-				bufMat = VecVecT(vFisherParam, vFisherParam);
-				FisherMat = AddMatrixMatrix(FisherMat, bufMat);
+				double[,] bufMat = new double[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
+				bufMat = compMat.VecVecT(vFisherParam, vFisherParam);
+				FisherMat = compMat.AddMatrixMatrix(FisherMat, bufMat);
             }
 
 			// Fisher Information Matrix !!
-			FisherMat = MultipleMatrix(1.0f / (float)m_Trajectories.Count, FisherMat);
-			//for (int i = 0; i < 101; i++)
-			//{
-			//	//Debug.LogFormat("VecF[{0}]: {1}", i, vFisherParam[i]);
-			//	Debug.LogFormat("fisher mat[{0}]: {1}", i, FisherMat[i, i]);
-			//}
-
-			float zeroSl = 1.0E-30f;
-			//count zero element
-			int count = 0;
-			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length + 1; i++)
-			{
-				if (zeroSl < FisherMat[i, i]) {
-					count++;
-				}
-			}
-			Debug.LogFormat("number of zero element: {0}", count);
-
-			//
-			float[,] FisherMatNotZero = new float[count, count];
-			int[] IDofNotZero = new int[count];
-			count = 0;
-			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length + 1; i++)
-			{
-				if (zeroSl < FisherMat[i, i]) {
-					IDofNotZero[count] = i;
-					count++;
-				}
-			}
-
-			for (int i = 0; i < IDofNotZero.LongLength; i++)
-			{
-				for (int j = 0; j < IDofNotZero.LongLength; j++) {
-					FisherMatNotZero[i, j] = FisherMat[IDofNotZero[i], IDofNotZero[j]];
-				}
-            }
+			FisherMat = compMat.MultipleMatrix(1.0f / (double)m_Trajectories.Count, FisherMat);
 
 			//Inverse Fisher Information Matrix
 			EigenFunc eigen = new EigenFunc();
-			float[,] InvFisherMat = eigen.InverseMatrix(FisherMat);
-			float[,] InvFisherMatNotZero = eigen.InverseMatrix(FisherMatNotZero);
+			double[,] InvFisherMat = eigen.InverseMatrix(FisherMat);
 
-			//for (int i = 0; i < 100; i++)
-			//{
-			//	Debug.LogFormat("inv fisher mat[{0}]: {1}", i, InvFisherMat[i, i]);
-			//}
-
-			for (int i = 0; i < IDofNotZero.Length; i++) {
-				Debug.LogFormat("inv fisher mat not zero[{0}]: {1}", i, InvFisherMatNotZero[i, i]);
-			}
-
-			//convert
-			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length + 1; i++) {
-				for (int j = 0; j < m_GaussianPolicyModel.m_Mean.Length + 1; j++)
-				{
-					InvFisherMat[i, j] = 0.0f;
-				}
-			}
-			for (int i = 0; i < IDofNotZero.LongLength; i++)
-			{
-				for (int j = 0; j < IDofNotZero.LongLength; j++)
-				{
-					InvFisherMat[IDofNotZero[i], IDofNotZero[j]] = InvFisherMatNotZero[i, j];
-				}
-			}
-
-					//Calc Natural Gradient
-					float[] provGradientVec = new float[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
+			//Calc Natural Gradient
+			double[] provGradientVec = new double[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
 			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
 			{
 				provGradientVec[i] = gAscentMean[i];
 			}
 			provGradientVec[m_GaussianPolicyModel.m_Mean.Length] = gAscentStandDev;
-			float[] NaturalGradientVec = new float[m_GaussianPolicyModel.m_Mean.Length + 1];    //NaturalGradient
-			NaturalGradientVec = MultipleMatrixVector(InvFisherMat, provGradientVec);
+			double[] NaturalGradientVec = new double[m_GaussianPolicyModel.m_Mean.Length + 1];    //NaturalGradient
+			NaturalGradientVec = compMat.MultipleMatrixVector(InvFisherMat, provGradientVec);
+
+			//for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
+			//{
+			//	Debug.LogFormat("Ascent Mean[{0}]: {1}", i, gAscentMean[i]);
+			//}
 
 			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
 			{
 				gAscentMean[i] = NaturalGradientVec[i];
 			}
 			gAscentStandDev = NaturalGradientVec[m_GaussianPolicyModel.m_Mean.Length];
+
+			//for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
+			//{
+			//	Debug.LogFormat("Ascent Mean[{0}]: {1}", i, gAscentMean[i]);
+			//}
 
 			//Ascent
 			for (int i = 0; i < gAscentMean.Length; i++)
@@ -398,14 +258,14 @@ namespace RLProcess
 			m_GaussianPolicyModel.m_StandDev += m_eps * gAscentStandDev;
 
 			/* limit */
-			if (m_GaussianPolicyModel.m_StandDev < 1.0f)
+			if (m_GaussianPolicyModel.m_StandDev < 0.0001f)
 			{
-				m_GaussianPolicyModel.m_Mean = (float[])befMean.Clone();
+				m_GaussianPolicyModel.m_Mean = (double[])befMean.Clone();
 				m_GaussianPolicyModel.m_StandDev = befStandDev;
 			}
 
-			m_GaussianPolicyModel.SetState((float[])m_Trajectories[0][10].State.Clone());
-			float buf = m_GaussianPolicyModel.CalcActionMean();
+			m_GaussianPolicyModel.SetState((double[])m_Trajectories[0][10].State.Clone());
+			double buf = m_GaussianPolicyModel.CalcActionMean();
 			//Debug.LogFormat("ActionMean: {0}", buf);
 
 			//terminate judge
@@ -418,10 +278,10 @@ namespace RLProcess
 		/*----------------------------*/
 		/* Get Action based on policy */
 		/*----------------------------*/
-		public float GetAction(float[] state) {
-			m_GaussianPolicyModel.SetState((float[])state.Clone());
-			float ans = m_GaussianPolicyModel.CalcActionMean();
-			return ans;
+		public float GetAction(double[] state) {
+			m_GaussianPolicyModel.SetState((double[])state.Clone());
+			double ans = m_GaussianPolicyModel.CalcActionMean();
+			return (float)ans;
 		}
 
 		/*----------------*/
@@ -436,7 +296,7 @@ namespace RLProcess
 			{
 				TankStateStruct bufState = trajectory[i].m_State;
 				TankActionStruct bufAction = trajectory[i].m_Action;
-				float reward = trajectory[i].m_Reward;
+				double reward = trajectory[i].m_Reward;
 				writer.Write(i);
 				writer.Write("," + bufState.m_Position.x);
 				writer.Write("," + bufState.m_Position.y);

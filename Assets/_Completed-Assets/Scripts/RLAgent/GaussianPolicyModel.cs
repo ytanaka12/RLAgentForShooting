@@ -10,12 +10,12 @@ namespace RLProcess
 	[Serializable]
 	public class GaussianPolicyModel : ICloneable
 	{
-		public float[] m_Mean;
-		public float m_StandDev;
+		public double[] m_Mean;
+		public double m_StandDev;
 		public GaussianKernel[] m_GaussianKernel;
 
-		private float[] m_State;
-		private float m_Action;
+		private double[] m_State;
+		private double m_Action;
 
 		private string serializeDataPath;
 
@@ -34,9 +34,9 @@ namespace RLProcess
 		public GaussianPolicyModel(int num_of_kernel, int state_dimension)
 		{
 			//initialize Policy Model
-			m_Mean = new float[num_of_kernel];
+			m_Mean = new double[num_of_kernel];
 			m_StandDev = 1.0f;
-			m_State = new float[state_dimension];
+			m_State = new double[state_dimension];
 
 			//initialize Gaussian Kernel
 			m_GaussianKernel = new GaussianKernel[num_of_kernel];
@@ -49,30 +49,31 @@ namespace RLProcess
 		/*-----------*/
 		/* Set State */
 		/*-----------*/
-		public void SetState(float[] state) {
-			m_State = (float[])state.Clone();
+		public void SetState(double[] state) {
+			m_State = new double[state.Length];
+			m_State = (double[])state.Clone();
 		}
 
 		/*------------*/
 		/* Set Action */
 		/*------------*/
-		public void SetAction(float action) {
+		public void SetAction(double action) {
 			m_Action = action;
 		}
 
 		/* calculate Mean of Action */
-		public float CalcActionMean()
+		public double CalcActionMean()
 		{
-			float[] basis_func_val = new float[m_Mean.Length];
+			double[] basis_func_val = new double[m_Mean.Length];
 
 			//calc basis function values
 			for (int i = 0; i < basis_func_val.Length; i++)
 			{
-				basis_func_val[i] = m_GaussianKernel[i].Result(ref m_State);
+				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
 			}
 
 			//calc... meanT basis_func
-			float mb = 0.0f;
+			double mb = 0.0d;
 			for (int i = 0; i < m_Mean.Length; i++)
 			{
 				mb += m_Mean[i] * basis_func_val[i];
@@ -84,58 +85,58 @@ namespace RLProcess
 		/*------------------------------------*/
 		/* Calculate Gradient respect to Mean */
 		/*------------------------------------*/
-		public float[] CalcGradientMean() {
-			float[] basis_func_val = new float[m_Mean.Length];
+		public double[] CalcGradientMean() {
+			double[] basis_func_val = new double[m_Mean.Length];
 			//Debug.LogFormat("mean.length: {0}", m_Mean.Length);
 
 			//calc basis function values
 			for (int i = 0; i < basis_func_val.Length; i++) {
-				basis_func_val[i] = m_GaussianKernel[i].Result(ref m_State);
+				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
 			}
 			//Debug.LogFormat("bf value: {0}, {1}, {2}", basis_func_val[0], basis_func_val[1], basis_func_val[2]);
 
 			//calc... meanT basis_func
-			float mb = 0.0f;
+			double mb = 0.0f;
 			for (int i = 0; i < m_Mean.Length; i++) {
 				mb += m_Mean[i] * basis_func_val[i];
 			}
 
 			//calc... ( a - mb ) / sigma^2
-			float a_mb__sig = ( m_Action - mb ) / Mathf.Pow( m_StandDev, 2.0f);
+			double a_mb__sig = ( m_Action - mb ) / Math.Pow( m_StandDev, 2.0f);
 
 			//calc Answer
-			float[] ans = new float[m_Mean.Length];
+			double[] ans = new double[m_Mean.Length];
 			for (int i = 0; i < ans.Length; i++) {
 				ans[i] = a_mb__sig * basis_func_val[i];
 			}
 
-			return (float[])ans.Clone();
+			return (double[])ans.Clone();
 		}
 
 		/*--------------------------------------------------*/
 		/* Calculate Gradient respect to Standard Deviation */
 		/*--------------------------------------------------*/
-		public float CalcgradientStandDev() {
-			float[] basis_func_val = new float[m_Mean.Length];
+		public double CalcgradientStandDev() {
+			double[] basis_func_val = new double[m_Mean.Length];
 
 			//calc basis function values
 			for (int i = 0; i < basis_func_val.Length; i++)
 			{
-				basis_func_val[i] = m_GaussianKernel[i].Result(ref m_State);
+				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
 			}
 
 			//calc... meanT basis_func
-			float mb = 0.0f;
+			double mb = 0.0f;
 			for (int i = 0; i < m_Mean.Length; i++)
 			{
 				mb += m_Mean[i] * basis_func_val[i];
 			}
 
 			//calc... ( a - mb )^2
-			float a_mb2 = Mathf.Pow( m_Action - mb, 2.0f);
+			double a_mb2 = Math.Pow( m_Action - mb, 2.0f);
 
 			//calc Answer
-			float ans = (a_mb2 - Mathf.Pow(m_StandDev, 2.0f)) / Mathf.Pow(m_StandDev, 3.0f);
+			double ans = (a_mb2 - Math.Pow(m_StandDev, 2.0f)) / Math.Pow(m_StandDev, 3.0f);
 
 			return ans;
 		}
@@ -154,7 +155,7 @@ namespace RLProcess
 			int num_of_kernel = buf.m_GaussianKernel.Length;
 			int state_dimension = buf.m_GaussianKernel[0].m_KernelCenter.Length;
 			Debug.LogFormat("loarding xml info... num: {0} / dim: {1}", num_of_kernel, state_dimension);
-			m_Mean = new float[num_of_kernel];
+			m_Mean = new double[num_of_kernel];
 			for (int i = 0; i < num_of_kernel; i++)
 			{
 				//Debug.LogFormat("i = [{0}]", i);
@@ -170,7 +171,7 @@ namespace RLProcess
 			//Debug.LogFormat("okok");
 			//for (int i = 0; i < state_dimension; i++)
 			//{
-			//	float kc = m_GaussianKernel[1].m_KernelCenter[i];
+			//	double kc = m_GaussianKernel[1].m_KernelCenter[i];
 			//	//Debug.LogFormat("kc: {0}", kc);
 			//}
 		}

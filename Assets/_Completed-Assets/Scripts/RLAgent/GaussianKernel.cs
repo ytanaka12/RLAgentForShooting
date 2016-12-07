@@ -9,8 +9,8 @@ namespace RLProcess
 	[Serializable]
 	public class GaussianKernel
 	{
-		public float[] m_KernelCenter;
-		public float m_Sigma;
+		public double[] m_KernelCenter;
+		public double m_Sigma;
 
 		public GaussianKernel()
 		{
@@ -18,27 +18,27 @@ namespace RLProcess
 
 		public GaussianKernel(int state_dimension)
 		{
-			this.m_KernelCenter = new float[state_dimension];
+			this.m_KernelCenter = new double[state_dimension];
 		}
 
-		public float Result(ref float[] s)
+		public double Result(double[] s)
 		{
 			//error
 			if (s.Length != m_KernelCenter.Length)
 			{
 				Debug.LogFormat("Length of kernel center is invalid");
-				return -1.0f;
+				return -1.0d;
 			}
 
 			//Debug.LogFormat("kernel center: {0}, {1}, {2}", m_KernelCenter[0], m_KernelCenter[1], m_KernelCenter[2]);
 
-			float buf = 0;
+			double buf = 0.0d;
 			for (int i = 0; i < m_KernelCenter.Length; i++)
 			{
-				buf += Mathf.Pow(m_KernelCenter[i] - s[i], 2.0f);
+				buf += Math.Pow(m_KernelCenter[i] - s[i], 2.0d);
 				//Debug.LogFormat("kc - s = {0} - {1}", m_KernelCenter[i], s[i]);
 			}
-			float ans = Mathf.Exp(-buf / (2f * m_Sigma));
+			double ans = Math.Exp(-buf / (2.0d * m_Sigma * m_Sigma));
 			//Debug.LogFormat("ans: {0}", ans);
 
 			return ans;

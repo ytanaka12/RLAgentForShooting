@@ -77,12 +77,26 @@ namespace RLProcess
 			//LoadEpisode(fNameLoadEpisode);
 
 			/* EigenFunc.dll Sample */
-			//EigenFunc eigen = new EigenFunc();
-			//float[,] bufMat = new float[3, 3] { { 1f, 2f, 1f }, { 2f, 1f, 0f }, { 1f, 1f, 2f } };
-			//float[,] AnsMat = new float[3, 3];
+			EigenFunc eigen = new EigenFunc();
+			double[] vec1 = new double[3] { 1, 2, 3 };
+			double[] vec2 = new double[3] { 3, 4, 7 };
+			double[,] bufMat = new double[3, 3] { { 1f, 2f, 1f }, { 2f, 1f, 0f }, { 1f, 1f, 2f } };
+			double[,] AnsMat = new double[3, 3];
 			//Debug.LogFormat("bufMat: {0}", bufMat[0,0]);
 			//AnsMat = eigen.InverseMatrix(bufMat);
 			//Debug.LogFormat("AnsMat: {0}", AnsMat[2, 2]);
+
+			ComputeMatrix compMat = new ComputeMatrix();
+			bufMat = compMat.VecVecT(vec1, vec2);
+			Debug.LogFormat("--- VecVecT ---");
+			Debug.LogFormat("{0}, {1}, {2}", bufMat[0, 0], bufMat[0, 1], bufMat[0, 2]);
+			Debug.LogFormat("{0}, {1}, {2}", bufMat[1, 0], bufMat[1, 1], bufMat[1, 2]);
+			Debug.LogFormat("{0}, {1}, {2}", bufMat[2, 0], bufMat[2, 1], bufMat[2, 2]);
+			AnsMat = eigen.InverseMatrix(bufMat);
+			Debug.LogFormat("--- Inverse Matrix ---");
+			Debug.LogFormat("{0}, {1}, {2}", AnsMat[0, 0], AnsMat[0, 1], AnsMat[0, 2]);
+			Debug.LogFormat("{0}, {1}, {2}", AnsMat[1, 0], AnsMat[1, 1], AnsMat[1, 2]);
+			Debug.LogFormat("{0}, {1}, {2}", AnsMat[2, 0], AnsMat[2, 1], AnsMat[2, 2]);
 		}
 
 		/*-------------------------*/
@@ -169,16 +183,16 @@ namespace RLProcess
 		/* ClickOn Policy Update */
 		/*-----------------------*/
 		public void ClickOnGPM_Update() {
-			for (int i = 0; i < 1; i++)
+			for (int i = 0; i < 100; i++)
 			{
 				m_REINFORCE_Move.RunREINFORCE();
 				m_REINFORCE_Turn.RunREINFORCE();
-				m_REINFORCE_Fired.RunREINFORCE();
+				//m_REINFORCE_Fired.RunREINFORCE();
 			}
 			Debug.LogFormat("num of kernels: {0}", m_REINFORCE_Move.m_GaussianPolicyModel.m_Mean.Length);
-			//m_REINFORCE_Move.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Move.xml");
-			//m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Turn.xml");
-			//m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Fired.xml");
+			m_REINFORCE_Move.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Move.xml");
+			m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Turn.xml");
+			//m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k400_40x40_Fired.xml");
 		}
 
 		/*----------------------------------------------------------*/
@@ -420,19 +434,19 @@ namespace RLProcess
 			if (m_IsRecording == true || m_IsPlayBack == false || m_Episode.m_LogAITank.Count < 1)
 			{
 				//set state
-				float[] state = new float[2];
+				double[] state = new double[2];
 				Vector3 relPos = m_HuTankInfo.m_State.m_Position - m_AITankInfo.m_State.m_Position;
 				Vector3 gloEul = m_AITankInfo.m_State.m_Euler;
 				relPos = Quaternion.Euler(-gloEul * 180f / Mathf.PI) * relPos;
-				state[0] = relPos.x;
-				state[1] = relPos.z;
+				state[0] = (double)relPos.x;
+				state[1] = (double)relPos.z;
 				//state[2] = relEul.y;
 
-				float aMove = m_REINFORCE_Move.GetAction((float[])state.Clone());
+				float aMove = m_REINFORCE_Move.GetAction((double[])state.Clone());
 				aMove = Mathf.Clamp(aMove, -1.0f, 1.0f);
-				float aTurn = m_REINFORCE_Turn.GetAction((float[])state.Clone());
+				float aTurn = m_REINFORCE_Turn.GetAction((double[])state.Clone());
 				aTurn = Mathf.Clamp(aTurn, -1.0f, 1.0f);
-				float aFired = m_REINFORCE_Fired.GetAction((float[])state.Clone());
+				float aFired = m_REINFORCE_Fired.GetAction((double[])state.Clone());
 				Debug.LogFormat("move: {0}, turn: {1}, fire: {2}", aMove, aTurn, aFired);
 				SetAction(aMove, aTurn, Convert.ToBoolean(aFired));
 				//SetRandomAction();
