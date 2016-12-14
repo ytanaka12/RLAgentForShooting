@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using MOL;
 
 namespace RLProcess
 {
@@ -32,7 +33,6 @@ namespace RLProcess
 		private List<TankInfo> m_LogHuTank = new List<TankInfo>();
 
 		public GaussianPolicyModel m_GaussianPolicyModel = new GaussianPolicyModel();
-		private ComputeMatrix compMat = new ComputeMatrix();
 
 		public string fNameGPM_XML = "/GPMData.xml";
 
@@ -104,16 +104,19 @@ namespace RLProcess
 		/* Optimization by Gradient Ascent */
 		/*---------------------------------*/
 		public void GradientAscent() {
-			double[] gAscentMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+			//double[] gAscentMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+			Matrix gAscentMean = new Matrix(m_GaussianPolicyModel.m_Mean.Length);
 			//initialize
-			for (int i = 0; i < gAscentMean.Length; i++) {
-				gAscentMean[i] = 0.0f;
-			}
+			//for (int i = 0; i < gAscentMean.Length; i++) {
+			//	gAscentMean[i] = 0.0f;
+			//}
 			double gAscentStandDev = 0.0f;
 
-			double[] befMean = new double[m_GaussianPolicyModel.m_Mean.Length];
-			befMean = (double[])m_GaussianPolicyModel.m_Mean.Clone();
-			double befStandDev = new double();
+			//double[] befMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+			//Matrix befMean = new Matrix(m_GaussianPolicyModel.m_Mean.Length);
+			//befMean = (double[])m_GaussianPolicyModel.m_Mean.Clone();
+			Matrix befMean = new Matrix((double[])m_GaussianPolicyModel.m_Mean.Clone());
+            double befStandDev = new double();
 			befStandDev = m_GaussianPolicyModel.m_StandDev;
 
 			for (int n = 0; n < m_Trajectories.Count ; n++) {
@@ -126,22 +129,24 @@ namespace RLProcess
 					//m_GaussianPolicyModel.SetAction(1.6f);
 
 					//calculate Gradient
-					double[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
-                    gAscentMean = compMat.AddVectorB2VectorA( ref gAscentMean, ref bufMean );
+					//double[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
+					Matrix bufMean = new Matrix(m_GaussianPolicyModel.CalcGradientMean());
+					//gAscentMean = compMat.AdditionVecVec(gAscentMean, bufMean );
+					gAscentMean = gAscentMean + bufMean;
 					gAscentStandDev += m_GaussianPolicyModel.CalcgradientStandDev();
 				}
 			}
 
 			//Ascent
-			for (int i = 0; i < gAscentMean.Length; i++)
+			for (int i = 0; i < gAscentMean.GetNumOfRow(); i++)
 			{
-				m_GaussianPolicyModel.m_Mean[i] += m_eps * gAscentMean[i];
+				m_GaussianPolicyModel.m_Mean[i] += m_eps * gAscentMean.Element[i,0];
 			}
 			m_GaussianPolicyModel.m_StandDev += m_eps * gAscentStandDev;
 
 			/* limit */
 			if (m_GaussianPolicyModel.m_StandDev < 1.0f) {
-				m_GaussianPolicyModel.m_Mean = (double[])befMean.Clone();
+				m_GaussianPolicyModel.m_Mean = (double[])befMean.GetVector();
 				m_GaussianPolicyModel.m_StandDev = befStandDev;
 			}
 
@@ -162,27 +167,28 @@ namespace RLProcess
 		public void NaturalGradientAscent()
 		{
 			//initialize
-			double[] gAscentMean = new double[m_GaussianPolicyModel.m_Mean.Length];
-			for (int i = 0; i < gAscentMean.Length; i++)
-			{
-				gAscentMean[i] = 0.0f;
-			}
+			//double[] gAscentMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+			Matrix gAscentMean = new Matrix(m_GaussianPolicyModel.m_Mean.Length, 1);
 			double gAscentStandDev = 0.0f;
 
 			//temporary memory
-			double[] befMean = new double[m_GaussianPolicyModel.m_Mean.Length];
-			befMean = (double[])m_GaussianPolicyModel.m_Mean.Clone();
+			//double[] befMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+			Matrix befMean = new Matrix((double[])m_GaussianPolicyModel.m_Mean.Clone());
+			//befMean = (double[])m_GaussianPolicyModel.m_Mean.Clone();
 			double befStandDev = new double();
 			befStandDev = m_GaussianPolicyModel.m_StandDev;
 
 			//vector for calculation of Fisher information matrix
-			double[] vFisherParam = new double[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
-			double[,] FisherMat = new double[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
+			//double[] vFisherParam = new double[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
+			Matrix vFisherParam = new Matrix(m_GaussianPolicyModel.m_Mean.Length + 1);
+			//double[,] FisherMat = new double[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
+			Matrix FisherMat = new Matrix(m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1);
 
 			//calc
 			for (int n = 0; n < m_Trajectories.Count; n++)
 			{
-				double[] bufFisherMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+				//double[] bufFisherMean = new double[m_GaussianPolicyModel.m_Mean.Length];
+				Matrix bufFisherMean = new Matrix(m_GaussianPolicyModel.m_Mean.Length);
 				double bufFisherStandDev = 0.0f;
 				//calc gradient like previous
 				for (int t = 0; t < m_Trajectories[n].Count; t++)
@@ -195,9 +201,10 @@ namespace RLProcess
 					//m_GaussianPolicyModel.SetAction(1.6f);
 
 					//calculate Gradient
-					double[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
-					gAscentMean = compMat.AddVectorB2VectorA(ref gAscentMean, ref bufMean);
-					bufFisherMean = compMat.AddVectorB2VectorA(ref bufFisherMean, ref bufMean);
+					//double[] bufMean = m_GaussianPolicyModel.CalcGradientMean();
+					Matrix bufMean = new Matrix(m_GaussianPolicyModel.CalcGradientMean());
+					gAscentMean = gAscentMean + bufMean;
+					bufFisherMean = bufFisherMean + bufMean;
 					double bufStandDev = m_GaussianPolicyModel.CalcgradientStandDev();
 					gAscentStandDev += bufStandDev;
 					bufFisherStandDev += bufStandDev;
@@ -208,31 +215,39 @@ namespace RLProcess
                 }
 
 				//calc Fisher Information Matrix
-				for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++) {
-					vFisherParam[i] = bufFisherMean[i];
+				for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
+				{
+					vFisherParam.Element[i, 0] = bufFisherMean.Element[i, 0];
 				}
-				vFisherParam[m_GaussianPolicyModel.m_Mean.Length] = bufFisherStandDev;
-				double[,] bufMat = new double[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
-				bufMat = compMat.VecVecT(vFisherParam, vFisherParam);
-				FisherMat = compMat.AddMatrixMatrix(FisherMat, bufMat);
+				vFisherParam.Element[m_GaussianPolicyModel.m_Mean.Length, 0] = bufFisherStandDev;
+				//double[,] bufMat = new double[m_GaussianPolicyModel.m_Mean.Length + 1, m_GaussianPolicyModel.m_Mean.Length + 1];
+				//bufMat = compMat.MultiplicationVecVecT(vFisherParam, vFisherParam);
+				Matrix bufMat = vFisherParam * vFisherParam.Transposition();
+				//FisherMat = compMat.AdditionMatMat(FisherMat, bufMat);
+				FisherMat = FisherMat + bufMat;
             }
 
 			// Fisher Information Matrix !!
-			FisherMat = compMat.MultipleMatrix(1.0f / (double)m_Trajectories.Count, FisherMat);
+			//FisherMat = compMat.MultiplicationCoefMat(1.0f / (double)m_Trajectories.Count, FisherMat);
+			FisherMat = (1.0 / (double)m_Trajectories.Count) * FisherMat;
 
 			//Inverse Fisher Information Matrix
-			EigenFunc eigen = new EigenFunc();
-			double[,] InvFisherMat = eigen.InverseMatrix(FisherMat);
+			//EigenFunc eigen = new EigenFunc();
+			//double[,] InvFisherMat = compMat.InverseMatrix(FisherMat);
+			Matrix InvFisherMat = FisherMat.Inverse();
 
 			//Calc Natural Gradient
-			double[] provGradientVec = new double[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
-			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
+			//double[] provGradientVec = new double[m_GaussianPolicyModel.m_Mean.Length + 1];  // + StandDev
+			Matrix provGradientVec = new Matrix(m_GaussianPolicyModel.m_Mean.Length + 1, 1);
+            for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
 			{
-				provGradientVec[i] = gAscentMean[i];
+				provGradientVec.Element[i, 0] = gAscentMean.Element[i, 0];
 			}
-			provGradientVec[m_GaussianPolicyModel.m_Mean.Length] = gAscentStandDev;
-			double[] NaturalGradientVec = new double[m_GaussianPolicyModel.m_Mean.Length + 1];    //NaturalGradient
-			NaturalGradientVec = compMat.MultipleMatrixVector(InvFisherMat, provGradientVec);
+			provGradientVec.Element[m_GaussianPolicyModel.m_Mean.Length, 0] = gAscentStandDev;
+			//double[] NaturalGradientVec = new double[m_GaussianPolicyModel.m_Mean.Length + 1];    //NaturalGradient
+			Matrix NaturalGradientVec = new Matrix(m_GaussianPolicyModel.m_Mean.Length + 1, 1);
+			//NaturalGradientVec = compMat.MultiplicationMatVec(InvFisherMat, provGradientVec);
+			NaturalGradientVec = InvFisherMat * provGradientVec;
 
 			//for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
 			//{
@@ -241,9 +256,9 @@ namespace RLProcess
 
 			for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
 			{
-				gAscentMean[i] = NaturalGradientVec[i];
+				gAscentMean.Element[i, 0] = NaturalGradientVec.Element[i, 0];
 			}
-			gAscentStandDev = NaturalGradientVec[m_GaussianPolicyModel.m_Mean.Length];
+			gAscentStandDev = NaturalGradientVec.Element[m_GaussianPolicyModel.m_Mean.Length, 0];
 
 			//for (int i = 0; i < m_GaussianPolicyModel.m_Mean.Length; i++)
 			//{
@@ -251,9 +266,9 @@ namespace RLProcess
 			//}
 
 			//Ascent
-			for (int i = 0; i < gAscentMean.Length; i++)
+			for (int i = 0; i < gAscentMean.GetNumOfRow(); i++)
 			{
-				m_GaussianPolicyModel.m_Mean[i] += m_eps * gAscentMean[i];
+				m_GaussianPolicyModel.m_Mean[i] += m_eps * gAscentMean.Element[i, 0];
 			}
 			m_GaussianPolicyModel.m_StandDev += m_eps * gAscentStandDev;
 

@@ -77,7 +77,7 @@ namespace RLProcess
 			//LoadEpisode(fNameLoadEpisode);
 
 			/* EigenFunc.dll Sample */
-			EigenFunc eigen = new EigenFunc();
+			//EigenFunc eigen = new EigenFunc();
 			double[] vec1 = new double[3] { 1, 2, 3 };
 			double[] vec2 = new double[3] { 3, 4, 7 };
 			double[,] bufMat = new double[3, 3] { { 1f, 2f, 1f }, { 2f, 1f, 0f }, { 1f, 1f, 2f } };
@@ -85,18 +85,6 @@ namespace RLProcess
 			//Debug.LogFormat("bufMat: {0}", bufMat[0,0]);
 			//AnsMat = eigen.InverseMatrix(bufMat);
 			//Debug.LogFormat("AnsMat: {0}", AnsMat[2, 2]);
-
-			ComputeMatrix compMat = new ComputeMatrix();
-			bufMat = compMat.VecVecT(vec1, vec2);
-			Debug.LogFormat("--- VecVecT ---");
-			Debug.LogFormat("{0}, {1}, {2}", bufMat[0, 0], bufMat[0, 1], bufMat[0, 2]);
-			Debug.LogFormat("{0}, {1}, {2}", bufMat[1, 0], bufMat[1, 1], bufMat[1, 2]);
-			Debug.LogFormat("{0}, {1}, {2}", bufMat[2, 0], bufMat[2, 1], bufMat[2, 2]);
-			AnsMat = eigen.InverseMatrix(bufMat);
-			Debug.LogFormat("--- Inverse Matrix ---");
-			Debug.LogFormat("{0}, {1}, {2}", AnsMat[0, 0], AnsMat[0, 1], AnsMat[0, 2]);
-			Debug.LogFormat("{0}, {1}, {2}", AnsMat[1, 0], AnsMat[1, 1], AnsMat[1, 2]);
-			Debug.LogFormat("{0}, {1}, {2}", AnsMat[2, 0], AnsMat[2, 1], AnsMat[2, 2]);
 		}
 
 		/*-------------------------*/
