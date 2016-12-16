@@ -48,6 +48,17 @@ namespace MOL {
 			return (double[])Ans.Clone();
 		}
 
+		public double this[int row] {
+			set { this.Element[row, 0] = value; }
+			get { return this.Element[row, 0]; }
+		}
+
+		public double this[int row, int col]
+		{
+			set { this.Element[row, col] = value; }
+			get { return this.Element[row, col]; }
+		}
+
 		/*---------------------------*/
 		/* Initialization of Members */
 		/*---------------------------*/

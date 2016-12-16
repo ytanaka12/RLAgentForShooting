@@ -62,7 +62,8 @@ namespace RLProcess
 		private string fNameLoadEpisode = "/LogFiles/log_play01.xml";
 		private string fNameSaveEpisode = "/LogFiles/log.xml";
 
-		private string[] fNamesOfLoadEpisodes = { "/LogFiles/log_play01.xml"};
+		private string[] fNamesOfLoadEpisodes = { "/LogFiles/log_play01.xml",
+												  "/LogFiles/log_play02_Fired.xml"};
 
 		/*-----------------------------*/
 		/* Use this for initialization */
@@ -171,16 +172,16 @@ namespace RLProcess
 		/* ClickOn Policy Update */
 		/*-----------------------*/
 		public void ClickOnGPM_Update() {
-			for (int i = 0; i < 100; i++)
+			for (int i = 0; i < 1; i++)
 			{
 				m_REINFORCE_Move.RunREINFORCE();
 				m_REINFORCE_Turn.RunREINFORCE();
-				//m_REINFORCE_Fired.RunREINFORCE();
+				m_REINFORCE_Fired.RunREINFORCE();
 			}
 			Debug.LogFormat("num of kernels: {0}", m_REINFORCE_Move.m_GaussianPolicyModel.m_Mean.Length);
 			m_REINFORCE_Move.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Move.xml");
 			m_REINFORCE_Turn.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k100_40x40_Turn.xml");
-			//m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k400_40x40_Fired.xml");
+			m_REINFORCE_Fired.m_GaussianPolicyModel.OutputParamtersToXML("/GPMs/GPM_k400_40x40_Fired.xml");
 		}
 
 		/*----------------------------------------------------------*/

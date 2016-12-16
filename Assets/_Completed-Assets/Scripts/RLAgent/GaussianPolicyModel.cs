@@ -3,7 +3,7 @@ using System.IO;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using MOL;
 
 namespace RLProcess
 {
@@ -139,6 +139,51 @@ namespace RLProcess
 			double ans = (a_mb2 - Math.Pow(m_StandDev, 2.0f)) / Math.Pow(m_StandDev, 3.0f);
 
 			return ans;
+		}
+
+		/*--------------------------------------------------------------*/
+		/* Fisher Information Matrix (Under mild regularity conditions) */
+		/*--------------------------------------------------------------*/
+		public Matrix FisherInfoMatrix() {
+			Matrix Ans = new Matrix(m_Mean.Length + 1, m_Mean.Length + 1);
+			Matrix basis_func_val = new Matrix(m_Mean.Length);
+
+			//calc basis function values
+			for (int i = 0; i < m_Mean.Length; i++)
+			{
+				basis_func_val[i] = m_GaussianKernel[i].Result(m_State);
+			}
+
+			//calc... meanT basis_func
+			double mb = 0.0f;
+			for (int i = 0; i < m_Mean.Length; i++)
+			{
+				mb += m_Mean[i] * basis_func_val[i];
+			}
+
+			//calc... ( a - mb )^2
+			double a_mb2 = Math.Pow(m_Action - mb, 2.0);
+
+			double aa = - basis_func_val[0] * basis_func_val[0] / Math.Pow(m_StandDev, 2.0);
+			double bb = -2.0 * (m_Action - mb) * basis_func_val[0] / Math.Pow(m_StandDev, 3.0);
+
+			double cc = 2.0 * (m_Action - mb) * ( - basis_func_val[0] ) / Math.Pow(m_StandDev, 3.0);
+			double dd = -3.0 * a_mb2 / Math.Pow(m_StandDev, 4.0) + 1.0 / Math.Pow(m_StandDev, 2.0);
+
+			for (int r = 0; r < m_Mean.Length; r++) {
+				for (int c = 0; c < m_Mean.Length; c++){
+					Ans[r, c] = -basis_func_val[c] / Math.Pow(m_StandDev, 2.0) * basis_func_val[r];
+				}
+			}
+
+			for (int i = 0; i < m_Mean.Length; i++) {
+				Ans[m_Mean.Length, i] = -2.0 * (m_Action - mb) / Math.Pow(m_StandDev, 3.0) * basis_func_val[i];
+				Ans[i, m_Mean.Length] = Ans[m_Mean.Length, i];
+			}
+
+			Ans[m_Mean.Length, m_Mean.Length] = -3.0 * a_mb2 / Math.Pow(m_StandDev, 4.0) + 1.0 / Math.Pow(m_StandDev, 2.0);
+
+			return Ans;
 		}
 
 		public void OutputParamtersToXML(string file_path)
